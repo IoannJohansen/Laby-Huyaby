@@ -7,4 +7,5 @@
 #include <locale>
 #include <cwchar>
 #include "Out.h"
+#include "FST.h"
 using namespace std;
