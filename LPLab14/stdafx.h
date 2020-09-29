@@ -7,4 +7,8 @@
 #include <locale>
 #include <cwchar>
 #include "Out.h"
+#include "FST.h"
+#include "lexAnalyse.h"
+#include "IT.h"
+#include "LT.h"
 using namespace std;

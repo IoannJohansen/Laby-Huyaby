@@ -1,4 +1,4 @@
-#include "Out.h"
+#include "stdafx.h"
 
 namespace Out
 {
@@ -32,7 +32,7 @@ namespace Out
 		resultText[strlen((char*)resultText)] = '|';
 		resultText[strlen((char*)resultText)] = '\0';
 		strcpy((char*)out->text, (char*)resultText);
-		cout << out->text;
+		//cout << out->text;
 	}
 	void writeInsideTextTo_OutFile(Out::OUT out, Parm::PARM parm)
 	{

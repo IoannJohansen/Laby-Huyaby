@@ -22,6 +22,7 @@ namespace In
 		int position = 0;
 		int positionArray = 0;
 		bool flagEmptyFile = true;
+		bool flagLiteral = false;
 
 		while ((tempChar = file.get()) && !file.eof())
 		{
@@ -43,6 +44,22 @@ namespace In
 				position++;
 				break;
 			}
+			
+			case IN::L:
+			{
+				if (!flagLiteral)
+				{
+					flagLiteral = true;
+				}
+				else
+				{
+					flagLiteral = false;
+				}
+				inner_text.text[positionArray++] = tempChar;
+				inner_text.size++;
+				position++;
+				break;
+			}
 
 			case IN::I:
 			{	// игнор
@@ -53,6 +70,13 @@ namespace In
 
 			case IN::F:
 			{	// запрет
+				if (flagLiteral)
+				{
+					inner_text.text[positionArray++] = tempChar;
+					inner_text.size++;
+					position++;
+					break;
+				}
 				throw ERROR_THROW_IN(111, inner_text.lines, position + 1);
 				break;
 			}
@@ -64,7 +88,6 @@ namespace In
 				position++;
 				break;
 			}
-
 			}
 		}
 		inner_text.text[positionArray++] = '\0';

@@ -1,12 +1,13 @@
 #pragma once
+#include "stdafx.h"
 #include "In.h"
 #include "Parm.h"
-#include "stdafx.h"
 #include <string>
 #include <cstring>
 namespace Out
 {
-#define UNNECESSARY_SYMBOLS {\
+	#define UNNECESSARY_SYMBOLS\
+	{\
 	/*0			1		2		3		4		5		6		7		8		9	  A		   B	   C	   D	  E		  F*/\
 	OUT::E,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::S,	OUT::N,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,\
 	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,\
@@ -25,7 +26,7 @@ namespace Out
 	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,\
 	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,\
 	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I,	OUT::I \
-}
+	};
 	//	I(ignored) - обычные символы / буквы	/ НЕ ТРОГАТ
 	//	S(space) - пробельные  символы	/	пробел / табуляция
 	//	N(New string) - символ переноса строки	\n
