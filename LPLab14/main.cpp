@@ -16,7 +16,7 @@ int wmain(int argc, wchar_t* argv[])
 		Out::OUT out = Out::getout(param.out, in);
 		Log::WriteIn(log, in);
 		Out::preparationForOut(&out);
-		Lex::lexAnalyse(out);
+		Lex::lexAnalyse(out);	// ¿’¿’¿’¿’¿ı‡’¿ı‡’¿’‡ı’¿’‡ı
 		Out::writeInsideTextTo_OutFile(out, param);
 		Log::Close(log);
 		Out::CloseOut(out);

@@ -31,7 +31,7 @@ main
 	sb = '1234567890';
 	z = fi(x,y);
 	sc = fs(sa,sb);
-	print 'Контрольный пример';
+	print 'Контрольный	 пример';
 	print z; 
 	print sc;
 		
