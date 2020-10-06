@@ -8,7 +8,12 @@
 #include <cwchar>
 #include "Out.h"
 #include "FST.h"
-#include "lexAnalyse.h"
+#include "Scanner.h"
 #include "IT.h"
 #include "LT.h"
+#include <string>
+#include "arrFst.h"
 using namespace std;
+
+
+

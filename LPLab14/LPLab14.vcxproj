@@ -143,7 +143,7 @@
     <ClCompile Include="FST.cpp" />
     <ClCompile Include="In.cpp" />
     <ClCompile Include="IT.cpp" />
-    <ClCompile Include="lexAnalyse.cpp" />
+    <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Log.cpp" />
     <ClCompile Include="LT.cpp" />
     <ClCompile Include="main.cpp" />
@@ -151,11 +151,12 @@
     <ClCompile Include="Parm.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="arrFst.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="FST.h" />
     <ClInclude Include="In.h" />
     <ClInclude Include="IT.h" />
-    <ClInclude Include="lexAnalyse.h" />
+    <ClInclude Include="Scanner.h" />
     <ClInclude Include="Log.h" />
     <ClInclude Include="LT.h" />
     <ClInclude Include="Out.h" />

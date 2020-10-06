@@ -1,8 +1,9 @@
 #pragma once
 #include "stdafx.h"
-#define	LT_MAXSIZE			2000		// максимальное количество эл-ов в таблице лексем	
+#define	LT_MAXSIZE			1024		// максимальное количество эл-ов в таблице лексем	
 #define	LT_TI_NULLXDX		-1			// нет элемента таблицы идентификаторов				
-#define	LEX_TYPE			't'			// лексема дл€ тип данных
+#define	LEX_INTEGER			't'			// лексема дл€ integer
+#define	LEX_STRING			't'			// лексема дл€ string
 #define	LEX_ID				'i'			// лексема дл€ идентификатора
 #define	LEX_LITERAL			'l'			// лексема дл€ литерала
 #define	LEX_FUNCTION		'f'			// лексема дл€ function
@@ -16,12 +17,13 @@
 #define	LEX_RIGHTBRACE		'}'			// лексема дл€ }
 #define	LEX_LEFTHESIS		'('			// лексема дл€ (
 #define	LEX_RIGHTHESIS		')'			// лексема дл€ )
-#define	LEX_PLUS			'v'			// лексема дл€ +
-#define	LEX_MINUS			'v'			// лексема дл€ -
-#define	LEX_STAR			'v'			// лексема дл€ *
-#define	LEX_DIRSLASH		'v'			// лексема дл€ /
-#define PARM_LEX_DEFAULT_EXT L".lex.txt" //дл€ файла с результатом лексического анализa
+#define	LEX_PLUS			'+'			// лексема дл€ +
+#define	LEX_MINUS			'-'			// лексема дл€ -
+#define	LEX_STAR			'*'			// лексема дл€ *
+#define	LEX_DIRSLASH		'/'			// лексема дл€ /
+#define	LEX_EQUAL_SIGN		'='			// лексема дл€ =
 
+#define PARM_LEX_DEFAULT_EXT L".lex.txt" //дл€ файла с результатом лексического анализa
 
 
 namespace LT
@@ -44,7 +46,7 @@ namespace LT
 		LexTable();
 		void Add(Entry entry);					// добавление лексем
 		Entry GetEntry(int n);					// получить строку таблицы лексем
-		void PrintLexTable(const wchar_t* in);		// вывод лексем в файл
+		void PrintLexTable(const wchar_t* in);	// вывод лексем в файл
 		void Delete();							// удалить таблицу лексем (освободить пам€ть)
 	};
 }

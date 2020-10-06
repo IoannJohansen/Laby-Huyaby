@@ -42,7 +42,7 @@
     <ClCompile Include="FST.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
-    <ClCompile Include="lexAnalyse.cpp">
+    <ClCompile Include="Scanner.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
   </ItemGroup>
@@ -74,7 +74,10 @@
     <ClInclude Include="FST.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="lexAnalyse.h">
+    <ClInclude Include="Scanner.h">
+      <Filter>Файлы заголовков</Filter>
+    </ClInclude>
+    <ClInclude Include="arrFst.h">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>
