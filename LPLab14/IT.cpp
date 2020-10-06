@@ -3,11 +3,5 @@
 #include "IT.h"
 namespace IT
 {
-	IdTable Create(int size) {
-
-
-
-	}
-
 	
 }
