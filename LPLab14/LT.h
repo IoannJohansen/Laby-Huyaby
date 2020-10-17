@@ -7,7 +7,7 @@
 #define	LEX_ID				'i'			// лексема дл€ идентификатора
 #define	LEX_LITERAL			'l'			// лексема дл€ литерала
 #define	LEX_FUNCTION		'f'			// лексема дл€ function
-#define	LEX_LITERAL			'd'			// лексема дл€ declare
+#define	LEX_DECLARE			'd'			// лексема дл€ declare
 #define	LEX_RETURN			'r'			// лексема дл€ return
 #define	LEX_PRINT			'p'			// лексема дл€ print
 #define	LEX_MAIN			'm'			// лексема дл€ главной функции
@@ -22,31 +22,37 @@
 #define	LEX_STAR			'*'			// лексема дл€ *
 #define	LEX_DIRSLASH		'/'			// лексема дл€ /
 #define	LEX_EQUAL_SIGN		'='			// лексема дл€ =
-
-#define PARM_LEX_DEFAULT_EXT L".lex.txt" //дл€ файла с результатом лексического анализa
+#define	LEX_ARITHMETIC		'v'			// лексема дл€ арифметических знаков
 
 
 namespace LT
 {
-	struct Entry						// строка таблицы лексем
+	struct Entry	//строка таблицы лексем
 	{
-		char lexema;					// лесема
-		int sn;							// номер строки в исходном тексте
-		int idxTI;						// индекс в таблице идентификаторов или LT_TI_NULLIDX
-		Entry();
-		Entry(const char lex, int str_n, int idxTI);
+		char lexema;	//лексема
+		int sn;			//номер строки в исходном тексте
+		int idxTI;		//индекс в таблице идентификаторов или LT_TI_NULLIDX
 	};
 
-	struct LexTable						// экземпл€р таблицы лексем
+	struct LexTable		//экземпл€р таблицы лексем
 	{
-		int maxsize;					// емкость таблицы лексем < LT_MAXSIZE
-		int current_size;				// текущий размер таблицы лексем < maxsize
-		Entry* table;					// массив строк таблицы лексем
-
-		LexTable();
-		void Add(Entry entry);					// добавление лексем
-		Entry GetEntry(int n);					// получить строку таблицы лексем
-		void PrintLexTable(const wchar_t* in);	// вывод лексем в файл
-		void Delete();							// удалить таблицу лексем (освободить пам€ть)
+		int maxsize;	//емкость таблицы лексем < LT_MAXSIZE
+		int size;		//текущий размер таблицы лексем < maxsize
+		Entry* table;	//массив строк таблицы лексем
 	};
+
+	LexTable Create(	//создать таблицу лексем
+		int size	//емкость таблицы лексем < LT_MAXSIZE
+	);
+	void Add(	//добавить строку в таблицу лексем
+		LexTable& lextable,		//экземпл€р таблицы лексем
+		Entry entry		//строка таблицы лексем
+	);
+
+	Entry GetEntry(		//получить строку таблицы лексем
+		LexTable& lextable,		//экземпл€р таблицы лексем
+		int n		//номер получаемой строки
+	);
+
+	void Delete(LexTable& lextable);	//удалить таблицу лексем (освободить пам€ть)
 }

@@ -10,14 +10,15 @@ int wmain(int argc, wchar_t* argv[])
 		Parm::PARM param = Parm::getparm(argc, argv);
 		Out::clearOutFile(param.out);
 		log = Log::getlog(param.log);
-		Log::WriteLog(log);
-		Log::WriteParm(log, param);
 		In::IN in = In::getin(param.in);
 		Out::OUT out = Out::getout(param.out, in);
-		Log::WriteIn(log, in);
 		Out::preparationForOut(&out);
 		Lex::textDivision(out);
+		Log::WriteLog(log);
+		Log::WriteParm(log, param);
+		Log::WriteIn(log, in);
 		Out::writeInsideTextTo_OutFile(out, param);
+		Lex::outLexAndIdenTables(log);
 		Log::Close(log);
 		Out::CloseOut(out);
 	}

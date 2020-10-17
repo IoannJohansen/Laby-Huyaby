@@ -1,48 +1,57 @@
 #pragma once
-#pragma once
-
-#define ID_MAXSIZE		5				//максимальное количество сиволов в идентификаторе
+#define ID_MAXSIZE		6				//максимальное количество сиволов в идентификаторе
 #define TI_MAXSIZE		1024			// максимальное количество эл-ов в таблице идентификаторов 
 #define TI_INT_DEFAULT	0x00000000		// значение по умолчанию для типа integer 
 #define TI_STR_DEFAULT	0x00			// значение по умолчанию для типа string 
 #define TI_NULLIDX		-1				// нет элемента таблицы идентификаторов
 #define TI_STR_MAXSIZE	255
-
-#define PARM_ID_DEFAULT_EXT L".id.txt" //для файла с итогом лексического анализa(идентификаторы и литералы)
+#define TI_BLOCK_DEFAULT "GLOBAL"
+#define TI_BLOCK_MAIN	"MAIN"
 
 namespace IT	// таблица идентификатов
 {
-	enum IDDATATYPE { INT = 1, STR = 2 };		// типы данных идентификатов: integer, string
-	enum IDTYPE { V = 1, F = 2, P = 3, L = 4 };			// типы идентификаторов: переменная, функция, параметр, лексема
+	enum IDDATATYPE { INT = 1, STR = 2 };	//типы данных идентификаторов: integer, string
+	enum IDTYPE { V = 1, F = 2, P = 3, L = 4 };		//типы идентификаторов: переменная, функция, параметр, литерал
 
-
-	struct Entry						// эл-т таблицы идентификаторов
+	struct Entry	//строка таблицы идентификаторов
 	{
-		
-		char id[ID_MAXSIZE];			// идентификатор (автоматически усекается до ID_MAXSIZE
-		IDDATATYPE	iddatatype;			// тип данных
-		IDTYPE	idtype;					// тип идентикатора
+		char parrentBlock[ID_MAXSIZE+1];	//!!!
+		int			idxfirstLE;		//индекс первой строки в таблице лексем
+		char		id[ID_MAXSIZE+1];		//идентификатор (автоматически усекается до ID_MAXSIZE)
+		IDDATATYPE  iddatatype;		//тип данных
+		IDTYPE		idtype;		//тип идентификатора
 		union VALUE
 		{
-			int vint;					// значение integer
+			int vint = NULL;	//значение integer 
 			struct
 			{
-				unsigned char len;				// количесво символов в string
-				char str[TI_STR_MAXSIZE-1]; // символы string
-			} vstr[TI_STR_MAXSIZE];	// значение string
-		}value;	// значение идентификатора
+				int len;	//кол-во символов в string
+				char str[TI_STR_MAXSIZE];	//символы string
+			} vstr;		//значение string
+		} value;
 	};
 
-	struct IdTable // экземпляр таблицы идентификаторов
+	struct IdTable		//экземпляр таблицы идентификаторов
 	{
-		int maxsize;				// емкость таблицы идентификаторов < TI_MAXSIZE
-		int current_size;			// текущий размер таблицы идентификаторов < maxsize
-		Entry* table;				// массив строк таблицы идентификаторов
-	};
+		int maxsize;	//емкость таблицы идентификаторов < TI_MAXSIZE
+		int size;	//текущий размер таблицы идентификаторов < maxsize
+		Entry* table;	//массив строк таблицы идентификаторов
 
-	IdTable Create(int size);
-	void Add(IdTable& idTable, Entry entry);
-	Entry GetEntry(IdTable& idTable, int n);
-	int IsId(IdTable& idTable, char id[ID_MAXSIZE]);
-	void Delete(IdTable& idTable);
+	};
+	IdTable Create(		//создать таблицу идентификаторов
+		int size		//емкость таблицы идентификаторов < TI_MAXSIZE
+	);
+	void Add(	//добавить строку в таблицу идентификаторов
+		IdTable& idtable,	//экземпляр таблицы идентификаторов
+		Entry entry		//строка таблицы идентификаторов
+	);
+	int IsId(	//возврат: номер строки (если есть), TI_NULLIDX(если нет)
+		IdTable& idtable,	//экземпляр таблицы идентификаторов
+		char id[ID_MAXSIZE],		//идентификатор
+		char block[ID_MAXSIZE]
+		);
+
+	void Delete(IdTable& idtable);		//удалить таблицу лексем (освободить память)
+	Entry GetEntry(IdTable& idtable, int n);
+
 }

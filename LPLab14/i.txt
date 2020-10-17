@@ -14,17 +14,16 @@ string function fs (string a, string b)
 };
 
 
-main 
+main
 {
 	declare integer x;
 	declare integer y;
 	declare integer z;
-
-	
+	declare integer x;
 	declare string sa;
 	declare string sb;
 	declare string sc;
-	declare integer strlen(string p);
+	declare integer function strlen(string p);
 	x = 1;
 	y = 5;
 	sa = '1234567890';
@@ -41,9 +40,8 @@ main
 	return 0;
 };
 
-	
 		
 			
 				
-					
+			
 
