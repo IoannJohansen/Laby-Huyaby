@@ -4,11 +4,18 @@
 namespace Lex {
 	struct TempIT
 	{
-		bool flPar, flDec, flAssig;
+		bool flPar, flDec, flAssig, flPrint;
 		int numLine = 0;
+		int posNumber = 0;
 		int numidIT;
-		char lastID[ID_MAXSIZE + 1];
-		char parrentBlock[ID_MAXSIZE + 1];
+		char lastID[ID_MAXSIZE+1];
+		char parrentBlock[ID_MAXSIZE+1];
+		int brBalance;
+		TempIT() 
+		{
+			strcpy_s(this->parrentBlock, TI_BLOCK_DEFAULT);
+			this->brBalance = 0;
+		}
 	};
 	void textDivision(Out::OUT out);
 	bool tokenAnalyse(char* token);
@@ -27,5 +34,5 @@ namespace Lex {
 	void addStrLiteral(char* token);
 	void addLex(char lexem);
 	void addIdent(char* token);
-	void outLexAndIdenTables(Log::LOG log);
+	void outLexAndIdenTables(const wchar_t* in);
 }

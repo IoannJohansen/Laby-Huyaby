@@ -4,6 +4,7 @@
 #define	LT_TI_NULLXDX		-1			// нет элемента таблицы идентификаторов				
 #define	LEX_INTEGER			't'			// лексема для integer
 #define	LEX_STRING			't'			// лексема для string
+#define	LEX_TYPE			't'			// лексема для типов
 #define	LEX_ID				'i'			// лексема для идентификатора
 #define	LEX_LITERAL			'l'			// лексема для литерала
 #define	LEX_FUNCTION		'f'			// лексема для function
@@ -23,6 +24,7 @@
 #define	LEX_DIRSLASH		'/'			// лексема для /
 #define	LEX_EQUAL_SIGN		'='			// лексема для =
 #define	LEX_ARITHMETIC		'v'			// лексема для арифметических знаков
+#define PARM_LEX_DEFAULT_EXT L".lex.txt" //для файла с итогом лексического анализa
 
 
 namespace LT
@@ -39,6 +41,7 @@ namespace LT
 		int maxsize;	//емкость таблицы лексем < LT_MAXSIZE
 		int size;		//текущий размер таблицы лексем < maxsize
 		Entry* table;	//массив строк таблицы лексем
+		void writeLT(const wchar_t* in);
 	};
 
 	LexTable Create(	//создать таблицу лексем

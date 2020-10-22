@@ -7,12 +7,13 @@
 #define TI_STR_MAXSIZE	255
 #define TI_BLOCK_DEFAULT "GLOBAL"
 #define TI_BLOCK_MAIN	"MAIN"
+#define PARM_ID_DEFAULT_EXT L".id.txt" //для файла с итогом лексического анализa(идентификаторы и литералы)
+
 
 namespace IT	// таблица идентификатов
 {
 	enum IDDATATYPE { INT = 1, STR = 2 };	//типы данных идентификаторов: integer, string
 	enum IDTYPE { V = 1, F = 2, P = 3, L = 4 };		//типы идентификаторов: переменная, функция, параметр, литерал
-
 	struct Entry	//строка таблицы идентификаторов
 	{
 		char parrentBlock[ID_MAXSIZE+1];	//!!!
@@ -36,7 +37,7 @@ namespace IT	// таблица идентификатов
 		int maxsize;	//емкость таблицы идентификаторов < TI_MAXSIZE
 		int size;	//текущий размер таблицы идентификаторов < maxsize
 		Entry* table;	//массив строк таблицы идентификаторов
-
+		void writeIT(const wchar_t* in);
 	};
 	IdTable Create(		//создать таблицу идентификаторов
 		int size		//емкость таблицы идентификаторов < TI_MAXSIZE

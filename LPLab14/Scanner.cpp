@@ -5,65 +5,60 @@
 	IT::Entry entryIT = IT::GetEntry(idenTable, tempIT.numLine);
 	bool static mainIsDeclared;
 
-
 	namespace Lex
 	{
 		void textDivision(Out::OUT out)
 		{
 			char buff[257] = "\0";
 			int numLetter = 0;
-			for (int i = 0; out.text[i] != '\0'; i++)
+			for (int i = 0; out.text[i] != '\0'; i++, tempIT.posNumber++)
 			{
-				if (out.text[i] == IN_CODE_ENDL)	//считаем строки
-				{
-					tempIT.numLine++;
-					continue;
-				}
-				if (out.codeForOut[out.text[i]] == Out::OUT::S && out.text[i] != '\t')
-				{
-					buff[numLetter] = '\0';
-					if (tokenAnalyse(buff))
-					{
-						*buff = '\0';
-						numLetter = 0;
-						
-					}
-				}
-				else if (out.text[i] == '\t')
-				{
-					continue;
-				}
-				else if (numLetter != 0 && (out.codeForOut[out.text[i]] == Out::OUT::P || out.codeForOut[out.text[i]] == Out::OUT::B))
-				{
-					buff[numLetter] = '\0';
-					if (tokenAnalyse(buff))
-					{
-						*buff = '\0';
-						numLetter = 0;
-						i--;
 
+				if (out.text[i+1] == '\0') 
+				{
+					if (tempIT.brBalance != 0)
+					{
+						throw ERROR_THROW_IN(117, tempIT.numLine+1, 0);					//--!!!
 					}
 				}
-				else if (numLetter == 1 && (out.codeForOut[out.text[i - 1]] == Out::OUT::P || out.codeForOut[out.text[i - 1]] == Out::OUT::B))
+				if ((out.codeForOut[out.text[i]]==Out::OUT::S)&&(out.codeForOut[out.text[i-1]]==Out::OUT::I))
 				{
 					buff[numLetter] = '\0';
-					if (tokenAnalyse(buff))
+					tokenAnalyse(buff);
+					//cout << "Лексема: " << buff << " распознана" << " Строка: " << tempIT.numLine <<  endl;
+					*buff = '\0';
+					numLetter = 0;
+				}
+				else if ((numLetter!=0)&&((out.codeForOut[out.text[i]]==Out::OUT::B)||(out.codeForOut[out.text[i]]==Out::OUT::P))&&(out.codeForOut[out.text[i-1]]==Out::OUT::I))
+				{	
+					buff[numLetter] = '\0';
+					tokenAnalyse(buff);
+					//cout << "Лексема: " << buff << " распознана" << " Строка: " << tempIT.numLine <<  endl;
+					*buff = '\0';
+					numLetter = 0;
+					i--;			// откат на позицию назад т к текущ символ = OUT::B
+				}
+				else if ((numLetter==1)&&((out.codeForOut[out.text[i-1]]==Out::OUT::B)||(out.codeForOut[out.text[i-1]] == Out::OUT::P)))
+				{					// check for arithmetic token
+					buff[numLetter] = '\0';
+					tokenAnalyse(buff);
+					//cout << "Лексема: " << buff << " распознана" << " Строка: " << tempIT.numLine <<  endl;
+					*buff = '\0';
+					numLetter = 0;
+					i--;			// откат на позицию назад т к текущ символ = OUT::B
+				}
+				else  if ((out.text[i]=='|')||(out.text[i]=='\t'))
+				{
+					if (strlen(buff) != 0)
 					{
+						buff[numLetter] = '\0';
+						tokenAnalyse(buff);
 						*buff = '\0';
 						numLetter = 0;
-						i--;
-
 					}
+					tempIT.posNumber++;
 				}
-				else if (out.text[i] == '|' || out.codeForOut[out.text[i]] == Out::OUT::N)
-				{
-					if (out.text[i] == IN_CODE_ENDL)
-					{
-						tempIT.numLine++;
-					}
-					continue;
-				}
-				else if (out.codeForOut[out.text[i]] == Out::OUT::L)
+				else if (out.codeForOut[out.text[i]] == Out::OUT::L)		// literal
 				{
 					buff[numLetter++] = out.text[i++];
 					while (out.codeForOut[out.text[i]] != Out::OUT::L)
@@ -71,15 +66,28 @@
 						buff[numLetter++] = out.text[i++];
 					}
 					buff[numLetter++] = out.text[i];
+					buff[numLetter] = '\0';
+					tokenAnalyse(buff);
+					*buff = '\0';
+					numLetter = 0;
+				}
+				else if ((out.text[i]==IN_CODE_ENDL)&&((out.codeForOut[out.text[i-2]]==Out::OUT::B)||(out.codeForOut[out.text[i-2]] == Out::OUT::I)))
+				{
+					
+					numLetter = 0;
+					tempIT.numLine++;
+					tempIT.posNumber = 0;
 				}
 				else
 				{
 					buff[numLetter++] = out.text[i];
 				}
+
 			}
+
 			if (!mainIsDeclared)
 			{
-				throw ERROR_THROW(133);
+				throw ERROR_THROW(133, tempIT.numLine+1, tempIT.posNumber);
 			}
 		}
 
@@ -113,7 +121,7 @@
 				addLex(LEX_MAIN);
 				return true;
 			}
-			if ((token[0] == checkForArithmeticTokens(token)) && (strlen(token) == 1))
+			if (((token[0] == checkForArithmeticTokens(token)) || (checkForArithmeticTokens(token) == LEX_ARITHMETIC)) && strlen(token) == 1)
 			{
 				char symbol = checkForArithmeticTokens(token);
 				addLex(symbol);
@@ -134,6 +142,14 @@
 				return true;
 			}
 		}
+
+		bool checkIdNameForTokens(char* token)		//-----!!!!!!!!!!!!!!!!!!!
+		{
+
+
+
+			return true;
+		}	  
 
 		bool checkForInteger(char* token) {
 			FST::FST* a_integer = new FST::FST(A_INTEGER(token));
@@ -235,6 +251,7 @@
 			{
 				delete a_print;
 				a_print = nullptr;
+				tempIT.flPrint = true;
 				return true;
 			}
 			else
@@ -252,6 +269,7 @@
 				if (mainIsDeclared)throw ERROR_THROW(130);
 				strcpy_s(tempIT.parrentBlock, TI_BLOCK_MAIN);
 				mainIsDeclared = true;
+				if(tempIT.brBalance != 0)throw ERROR_THROW_IN(117, tempIT.numLine, 0);	//--!!!
 				delete a_main;
 				a_main = nullptr;
 				return true;
@@ -267,18 +285,22 @@
 		char checkForArithmeticTokens(char* token) {
 			switch (token[0])
 			{
-			case LEX_SEMICOLON: {return LEX_SEMICOLON; break; }
-			case LEX_COMMA: {return LEX_COMMA; break; }
-			case LEX_LEFTBRACE: {return LEX_LEFTBRACE; break; }
-			case LEX_RIGHTBRACE: {return LEX_RIGHTBRACE; break; }
-			case LEX_LEFTHESIS: {tempIT.flPar = true; return LEX_LEFTHESIS; break; }
-			case LEX_RIGHTHESIS: {tempIT.flPar = false; return LEX_RIGHTHESIS; break; }
-			case LEX_PLUS: {return LEX_PLUS; break; }
-			case LEX_MINUS: {return LEX_MINUS; break; }
-			case LEX_STAR: {return LEX_STAR; break; }
-			case LEX_DIRSLASH: {return LEX_DIRSLASH; break; }
+			case LEX_SEMICOLON: { tempIT.flAssig = false; return LEX_SEMICOLON; break; }
+			case LEX_COMMA: { return LEX_COMMA; break; }
+			case LEX_LEFTBRACE: {tempIT.brBalance++; return LEX_LEFTBRACE; break; }
+			case LEX_RIGHTBRACE: {tempIT.brBalance--; strcpy_s(tempIT.parrentBlock, TI_BLOCK_DEFAULT); return LEX_RIGHTBRACE; break; }
+			case LEX_LEFTHESIS: 
+			{ if (lexTable.table[lexTable.size-1].lexema==LEX_ID)tempIT.flPar = true;
+			return LEX_LEFTHESIS; 
+			break; 
+			}
+			case LEX_RIGHTHESIS: {tempIT.flPar = false; return LEX_RIGHTHESIS;break; }
+			case LEX_PLUS: {return LEX_ARITHMETIC; break; }
+			case LEX_MINUS: {return LEX_ARITHMETIC; break; }
+			case LEX_STAR: {return LEX_ARITHMETIC; break; }
+			case LEX_DIRSLASH: {return LEX_ARITHMETIC; break; }
 			case LEX_EQUAL_SIGN: {
-				if (lexTable.table[lexTable.size - 1].lexema == LEX_ID)tempIT.flAssig = true;
+				tempIT.flAssig = true;
 				return LEX_EQUAL_SIGN;
 				break;
 			}
@@ -286,14 +308,84 @@
 		}
 
 		bool checkForId(char* token) {
-			if (strlen(token) > ID_MAXSIZE)throw ERROR_THROW(128);
+			if (strlen(token) > ID_MAXSIZE)throw ERROR_THROW_IN(128, tempIT.numLine+1, tempIT.posNumber);
 			for (int i = 0; i < strlen(token); i++)
 			{
-				if (token[i] < 'a' || token[i] > 'z')throw ERROR_THROW(131);
+				if (token[i] < 'a' || token[i] > 'z')throw ERROR_THROW_IN(131, tempIT.numLine+1, tempIT.posNumber);
 			}
 			if (tempIT.flPar)entryIT.idtype = IT::P;
 			strcpy_s(tempIT.lastID, token);
-			if (IT::IsId(idenTable, tempIT.lastID, entryIT.parrentBlock) == TI_NULLIDX)
+
+#pragma region Checking for lex errors
+
+			if (tempIT.flPar && (tempIT.flAssig||tempIT.flPrint))					// CHECK FOR VALID DECLARATION OF FACTIC PARAMETERS IN CALL OF FUNCTION
+			{
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA))
+				{
+					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
+				}
+			}
+			else if (tempIT.flPar)								// CHECK FOR VALID DECLARATION OF FORMAL PARAMETERS IN DECLARE OF FUNCTION
+			{
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_TYPE)&&(lexTable.table[lexTable.size-2].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-2].lexema != LEX_LEFTHESIS))
+				{
+					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
+				}
+			}
+
+			if (lexTable.table[lexTable.size-1].lexema==LEX_FUNCTION)	 // CHECK FOR INVALID DECLARATION OF FUNCTION
+			{
+				if (lexTable.table[lexTable.size-2].lexema!=LEX_TYPE)
+				{
+					throw ERROR_THROW_IN(118, tempIT.numLine+1, tempIT.posNumber);
+				}
+				else if (strcmp(tempIT.parrentBlock, TI_BLOCK_DEFAULT)==0)		// ext dec
+				{
+					if (lexTable.table[lexTable.size-3].lexema==LEX_DECLARE)
+					{
+						throw ERROR_THROW_IN(118, tempIT.numLine+1, tempIT.posNumber);
+					}
+				}
+				else if (tempIT.parrentBlock != TI_BLOCK_DEFAULT)					// int dec
+				{
+					if (lexTable.table[lexTable.size-3].lexema!=LEX_DECLARE)
+					{
+						throw ERROR_THROW_IN(118, tempIT.numLine+1, tempIT.posNumber);
+					}
+				}
+			}
+			else if ((tempIT.flDec==false)&&(lexTable.table[lexTable.size-1].lexema!=LEX_TYPE)&&(lexTable.table[lexTable.size-1].lexema!=LEX_PRINT)&&(IT::IsId(idenTable, token, tempIT.parrentBlock)==TI_NULLIDX))			// CHECK FOR USING UNDECLARED VARIABLES
+			{
+				throw ERROR_THROW_IN(124, tempIT.numLine+1, tempIT.posNumber);
+			}
+
+			
+
+			if ((IT::IsId(idenTable, token, tempIT.parrentBlock)!=TI_NULLIDX)&&((tempIT.flDec==true)||(lexTable.table[lexTable.size-1].lexema==LEX_FUNCTION)))						 // CHECK FOR OVERRIDING OF ID
+			{
+				throw ERROR_THROW_IN(123, tempIT.numLine+1, tempIT.posNumber);
+			}
+			
+			
+			if ((strcmp(tempIT.parrentBlock, TI_BLOCK_DEFAULT)!=0)&&(tempIT.flPar==false)&&(tempIT.flAssig==false)&&(IT::IsId(idenTable, token, tempIT.parrentBlock)==TI_NULLIDX)&&(lexTable.table[lexTable.size-1].lexema!=LEX_FUNCTION))			// CHECK FOR RIGHT SEQUENCE WHEN DECLARE OF VARIABLE
+			{
+				if (lexTable.table[lexTable.size-1].lexema == LEX_TYPE)
+				{
+					if (lexTable.table[lexTable.size-2].lexema != LEX_DECLARE)
+					{
+						throw ERROR_THROW_IN(121, tempIT.numLine + 1, tempIT.posNumber);
+					}
+				}
+				else
+				{
+					throw ERROR_THROW_IN(121, tempIT.numLine + 1, tempIT.posNumber);
+				}
+			}
+
+
+#pragma endregion	
+
+			if (IT::IsId(idenTable, token, tempIT.parrentBlock) == TI_NULLIDX)
 				addIdent(token);
 			return true;
 		}
@@ -307,12 +399,13 @@
 					tempIT.numidIT = IT::IsId(idenTable, tempIT.lastID, tempIT.parrentBlock);
 					if (tempIT.numidIT != TI_NULLIDX)
 					{
+						if (idenTable.table[tempIT.numidIT].iddatatype == IT::INT)throw ERROR_THROW_IN(127, tempIT.numLine+1, tempIT.posNumber-3);
 						strcpy_s(idenTable.table[tempIT.numidIT].value.vstr.str, token);
-						idenTable.table[tempIT.numidIT].value.vstr.len = strlen(token);
+						idenTable.table[tempIT.numidIT].value.vstr.len = strlen(token)-2;
 					}
 				}
 				addStrLiteral(token);
-				return true;	// LEX_LIteRAL
+				return true;
 			}
 			else
 			{
@@ -329,10 +422,13 @@
 				{
 					tempIT.numidIT = IT::IsId(idenTable, tempIT.lastID, tempIT.parrentBlock);
 					if (tempIT.numidIT != TI_NULLIDX)
+					{
+						if ((idenTable.table[tempIT.numidIT].iddatatype == IT::STR)&&(tempIT.flPar == false)&&(lexTable.table[lexTable.size-1].lexema!=LEX_RETURN))throw ERROR_THROW_IN(129, tempIT.numLine+1, tempIT.posNumber-3);
 						idenTable.table[tempIT.numidIT].value.vint = atoi(token);
+					}
 				}
 				addIntLiteral(token);
-				return true;	// LEX_LITERAL
+				return true;
 			}
 		}
 
@@ -348,18 +444,22 @@
 			strcpy_s(entryIT.id, "-");
 			entryIT.idtype = IT::L;
 			entryIT.iddatatype = IT::STR;
-			entryIT.value.vstr.len = strlen(token);
+			entryIT.value.vstr.len = strlen(token)-2;
 			strcpy_s(entryIT.value.vstr.str, token);
 			IT::Add(idenTable, entryIT);
 			entryIT.value.vstr.str[0] = TI_STR_DEFAULT;
 			entryIT.value.vstr.len = 0;
 		}
-
+		
 		void addLex(char lexem)
 		{
 			LT::Entry tempEntry;                             // временная лексема
 			tempEntry.lexema = lexem;
 			tempEntry.sn = tempIT.numLine;
+			if (lexem == LEX_ID)
+				tempEntry.idxTI = idenTable.size;
+			else
+				tempEntry.idxTI = LT_TI_NULLXDX;
 			LT::Add(lexTable, tempEntry);
 		}
 
@@ -387,48 +487,9 @@
 			tempIT.flDec = false;
 		}
 
-		void outLexAndIdenTables(Log::LOG log) {
-			for (int i = 0; i < lexTable.size; i++)
-			{
-				if (lexTable.table[i].sn != lexTable.table[i - 1].sn) //вывод на новых строках
-				{
-					(*log.stream) << std::endl;
-					(*log.stream) << lexTable.table[i].sn + 1 << " "; //нумерация
-				}
-				(*log.stream) << lexTable.table[i].lexema;
-			}
-			for (int i = 0; i < idenTable.size; i++)
-			{
-				cout << "Идентификатор: " << idenTable.table[i].id << endl;
-				cout << "Родительский блок " << idenTable.table[i].parrentBlock << endl;
-				if (idenTable.table[i].iddatatype == IT::INT)
-					cout << "Тип данных: integer" << endl;
-				else
-					cout << "Тип данных: string" << endl;
-				if (idenTable.table[i].idtype == IT::V)
-					cout << "Тип Идентификатора: переменная" << endl;
-				else if (idenTable.table[i].idtype == IT::F)
-					cout << "Тип Идентификатора: функция" << endl;
-				else if (idenTable.table[i].idtype == IT::P)
-					cout << "Тип Идентификатора: параметр" << endl;
-				else
-					cout << "Тип Идентификатора: литерал" << endl;
-				if ((idenTable.table[i].iddatatype == IT::INT && idenTable.table[i].idtype == IT::V) || (idenTable.table[i].iddatatype == IT::INT && idenTable.table[i].idtype == IT::L))
-					cout << "Инициализированное значение: " << idenTable.table[i].value.vint << endl;
-				else if ((idenTable.table[i].iddatatype == IT::STR && idenTable.table[i].idtype == IT::V)
-					|| (idenTable.table[i].iddatatype == IT::STR && idenTable.table[i].idtype == IT::L))
-				{
-					if (idenTable.table[i].value.vstr.str[0] == NULL)
-					{
-						cout << "Инициализированное значение: NULL" << endl;
-					}
-					else
-						cout << "Инициализированное значение: " << idenTable.table[i].value.vstr.str << endl;
-					cout << "Длина строки: " << idenTable.table[i].value.vstr.len << endl;
-				}
-
-				cout << endl;
-			}
+		void outLexAndIdenTables(const wchar_t* in)
+		{
+			lexTable.writeLT(in);
+			idenTable.writeIT(in);
 		}
 	}
-	

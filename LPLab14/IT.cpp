@@ -3,7 +3,6 @@
 #include "IT.h"
 namespace IT
 {
-
 	IdTable Create(int size)
 	{
 		IdTable* New = new IdTable;
@@ -34,6 +33,201 @@ namespace IT
 				return i;
 		}
 		return TI_NULLIDX;
+	}
+
+	void IdTable::writeIT(const wchar_t* in)
+	{
+		int i = 0;
+		wchar_t id[300];
+		for (; in[i] != '\0'; i++)
+			id[i] = in[i];
+		id[i] = '\0';
+		wcscat_s(id, PARM_ID_DEFAULT_EXT);
+
+		std::ofstream* idStream = new std::ofstream;
+		idStream->open(id);
+
+		if (idStream->is_open())
+		{
+			bool flagForFirst = false;
+
+#pragma region Literals
+
+			* (idStream) << "====================================================================================" << std::endl;
+			*(idStream) << "| Литералы                                                                         |" << std::endl;
+			*(idStream) << "====================================================================================" << std::endl;
+			*(idStream) << '|' << std::setw(15) << "Тип данных: " << "|" << std::setw(50) << "Значение: " << '|' << std::setw(15) << "Длина строки: " << '|' << std::endl;
+			*(idStream) << "====================================================================================" << std::endl;
+
+			for (int i = 0; i < this->size; i++)
+			{
+				if (this->table[i].idtype == IT::IDTYPE::L)
+				{
+					if (flagForFirst)
+						*(idStream) << "------------------------------------------------------------------------------------" << std::endl;
+
+					switch (this->table[i].iddatatype)
+					{
+					case IT::IDDATATYPE::INT:
+					{
+						*(idStream) << '|' << std::setw(15) << "INT  " << '|' << std::setw(50) << this->table[i].value.vint << '|' << std::setw(15) << "-" << '|' << std::endl;
+						break;
+					}
+					case IT::IDDATATYPE::STR:
+					{
+						*(idStream) << '|' << std::setw(15) << "STR  " << '|' << std::setw(50) << this->table[i].value.vstr.str << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
+						break;
+					}
+					}
+
+					flagForFirst = true;
+				}
+			}
+
+			*(idStream) << "====================================================================================" << std::endl;
+
+
+#pragma endregion
+			* (idStream) << "\n\n\n";
+#pragma region Functions
+
+			flagForFirst = false;
+			char buf[50]{};
+
+			*(idStream) << "=====================================================" << std::endl;
+			*(idStream) << "| Функции                                           |" << std::endl;
+			*(idStream) << "=====================================================" << std::endl;
+			*(idStream) << '|' << std::setw(20) << "Идентификатор: " << '|' << std::setw(30) << "Тип возвращаемого значения: " << '|' << std::endl;
+			*(idStream) << "=====================================================" << std::endl;
+
+			for (int i = 0; i < this->size; i++)
+			{
+				if (this->table[i].idtype == IT::IDTYPE::F)
+				{
+					strcat_s(buf, "  ");
+
+					if (flagForFirst)
+						*(idStream) << "-----------------------------------------------------" << std::endl;
+
+					switch (this->table[i].iddatatype)
+					{
+					case IT::IDDATATYPE::INT:
+					{
+						*(idStream) << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(30) << "INT " << '|' << std::endl;
+						break;
+					}
+					case IT::IDDATATYPE::STR:
+					{
+						*(idStream) << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(30) << "STR " << '|' << std::endl;
+						break;
+					}
+					}
+
+					flagForFirst = true;
+				}
+
+
+			}
+
+			*(idStream) << "=====================================================" << std::endl;
+
+#pragma endregion
+			* (idStream) << "\n\n\n";
+#pragma region Parameteres
+			flagForFirst = false;
+			*buf = '\0';
+			*(idStream) << "=========================================================================" << std::endl;
+			*(idStream) << "| Параметры                                                             |" << std::endl;
+			*(idStream) << "=========================================================================" << std::endl;
+			*(idStream) << '|' << std::setw(20) << "Параметр: " << '|' << std::setw(30) << "Родительский блок: " << '|' << std::setw(19) << "Тип данных: " << '|' << std::endl;
+			*(idStream) << "=========================================================================" << std::endl;
+			for (int i = 0; i < this->size; i++)
+			{
+				if (this->table[i].idtype == IT::IDTYPE::P)
+				{
+					strcat_s(buf, "  ");
+
+					if (flagForFirst)
+						*(idStream) << "-------------------------------------------------------------------------" << std::endl;
+
+					*(idStream) << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(19);
+					if (this->table[i].iddatatype == IT::STR)*(idStream) << "STR" << '|' << std::endl;
+					if (this->table[i].iddatatype == IT::INT)*(idStream) << "INT" << '|' << std::endl;
+					flagForFirst = true;
+				}
+			}
+			*(idStream) << "=========================================================================" << std::endl;
+#pragma endregion
+			*(idStream) << "\n\n\n";
+#pragma region Variables
+
+			flagForFirst = false;
+
+			*(idStream) << "==================================================================================================================================================================" << std::endl;
+			*(idStream) << "| Переменные                                                                                                                                                     |" << std::endl;
+			*(idStream) << "==================================================================================================================================================================" << std::endl;
+			*(idStream) << '|' << std::setw(30) << "Имя родительского блока: " << '|' << std::setw(20) << "Идентификатор: " << '|' << std::setw(15) << "Тип данных: " << '|' << std::setw(25) << "Тип идентификатора: " << '|' << std::setw(50) << "Значение: " << '|' << std::setw(15) << "Длина строки: " << '|' << std::endl;
+			*(idStream) << "==================================================================================================================================================================" << std::endl;
+
+			for (int i = 0; i < this->size; i++)
+			{
+				if (this->table[i].idtype == IT::IDTYPE::V)
+				{
+					if (flagForFirst)
+						*(idStream) << "------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+
+					switch (this->table[i].iddatatype)
+					{
+					case IT::IDDATATYPE::INT:
+					{
+						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(15) << "INT " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vint << '|' << std::setw(15) << "- " << '|' << std::endl;
+						break;
+					}
+					case IT::IDDATATYPE::STR:
+					{
+						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(15) << "STR " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vstr.str << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
+						break;
+					}
+					}
+
+					flagForFirst = true;
+				}
+
+				/*if (this->table[i].idtype == IT::IDTYPE::P)
+				{
+					if (flagForFirst)
+						*(idStream) << "------------------------------------------------------------------------------------------------------------------------------------------------------------------" << std::endl;
+
+					switch (this->table[i].iddatatype)
+					{
+					case IT::IDDATATYPE::INT:
+					{
+						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(15) << "INT " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vint << '|' << std::setw(15) << "- " << '|' << std::endl;
+						break;
+					}
+					case IT::IDDATATYPE::STR:
+					{
+						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(15) << "STR " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vstr.str << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
+						break;
+					}
+					}
+
+					flagForFirst = true;
+				}*/
+
+
+			}
+
+			*(idStream) << "==================================================================================================================================================================" << std::endl;
+
+#pragma endregion
+			* (idStream) << "\n\n\n";
+
+		}
+		else
+			throw ERROR_THROW(125);
+		idStream->close();
+		delete idStream;
 	}
 
 	void Delete(IdTable& idtable)

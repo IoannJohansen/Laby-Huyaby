@@ -84,6 +84,8 @@
   <ItemGroup>
     <Text Include="i.txt" />
     <Text Include="log.log" />
+    <Text Include="i.txt.id.txt" />
+    <Text Include="i.txt.lex.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="out.out" />

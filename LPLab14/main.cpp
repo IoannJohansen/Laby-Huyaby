@@ -13,14 +13,15 @@ int wmain(int argc, wchar_t* argv[])
 		In::IN in = In::getin(param.in);
 		Out::OUT out = Out::getout(param.out, in);
 		Out::preparationForOut(&out);
+		Out::writeInsideTextTo_OutFile(out, param);
 		Lex::textDivision(out);
 		Log::WriteLog(log);
 		Log::WriteParm(log, param);
 		Log::WriteIn(log, in);
-		Out::writeInsideTextTo_OutFile(out, param);
-		Lex::outLexAndIdenTables(log);
+		Lex::outLexAndIdenTables(param.in);
 		Log::Close(log);
 		Out::CloseOut(out);
+		std::cout << "ÄÀ!" << endl;
 	}
 	catch (Error::ERROR e)
 	{
