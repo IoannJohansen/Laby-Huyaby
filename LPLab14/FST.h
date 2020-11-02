@@ -39,6 +39,5 @@ namespace FST {
 
 	bool step(FST& fst, short*& rstates);
 	bool execute(FST& fst);
-	FST arrFST[];
 
 }

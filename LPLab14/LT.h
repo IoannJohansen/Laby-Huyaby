@@ -1,5 +1,4 @@
 #pragma once
-#include "stdafx.h"
 #define	LT_MAXSIZE			1024		// максимальное количество эл-ов в таблице лексем	
 #define	LT_TI_NULLXDX		-1			// нет элемента таблицы идентификаторов				
 #define	LEX_INTEGER			't'			// лексема для integer

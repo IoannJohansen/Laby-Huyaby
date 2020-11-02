@@ -14,14 +14,21 @@ int wmain(int argc, wchar_t* argv[])
 		Out::OUT out = Out::getout(param.out, in);
 		Out::preparationForOut(&out);
 		Out::writeInsideTextTo_OutFile(out, param);
-		Lex::textDivision(out);
+		//-------LEX ANALYSE-------
+		Lex::Tables tables = Lex::lexAnalyse(out);
+		//-------------------------
+
+		//-------POLISH NOTATION---
+
+		//-------------------------
 		Log::WriteLog(log);
 		Log::WriteParm(log, param);
 		Log::WriteIn(log, in);
 		Lex::outLexAndIdenTables(param.in);
 		Log::Close(log);
 		Out::CloseOut(out);
-		std::cout << "ÄÀ!" << endl;
+		LT::Delete(tables.lexTable);
+		IT::Delete(tables.idenTable);
 	}
 	catch (Error::ERROR e)
 	{

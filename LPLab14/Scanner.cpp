@@ -7,14 +7,14 @@
 
 	namespace Lex
 	{
-		void textDivision(Out::OUT out)
+		Tables lexAnalyse(Out::OUT out)
 		{
 			char buff[257] = "\0";
 			int numLetter = 0;
 			for (int i = 0; out.text[i] != '\0'; i++, tempIT.posNumber++)
 			{
 
-				if (out.text[i+1] == '\0') 
+				if (out.text[i+1] == '\0')
 				{
 					if (tempIT.brBalance != 0)
 					{
@@ -25,7 +25,6 @@
 				{
 					buff[numLetter] = '\0';
 					tokenAnalyse(buff);
-					//cout << "Лексема: " << buff << " распознана" << " Строка: " << tempIT.numLine <<  endl;
 					*buff = '\0';
 					numLetter = 0;
 				}
@@ -33,7 +32,6 @@
 				{	
 					buff[numLetter] = '\0';
 					tokenAnalyse(buff);
-					//cout << "Лексема: " << buff << " распознана" << " Строка: " << tempIT.numLine <<  endl;
 					*buff = '\0';
 					numLetter = 0;
 					i--;			// откат на позицию назад т к текущ символ = OUT::B
@@ -42,7 +40,6 @@
 				{					// check for arithmetic token
 					buff[numLetter] = '\0';
 					tokenAnalyse(buff);
-					//cout << "Лексема: " << buff << " распознана" << " Строка: " << tempIT.numLine <<  endl;
 					*buff = '\0';
 					numLetter = 0;
 					i--;			// откат на позицию назад т к текущ символ = OUT::B
@@ -89,6 +86,10 @@
 			{
 				throw ERROR_THROW(133, tempIT.numLine+1, tempIT.posNumber);
 			}
+			Tables newTables;
+			newTables.idenTable = idenTable;
+			newTables.lexTable = lexTable;
+			return newTables;
 		}
 
 		bool tokenAnalyse(char* token)
@@ -320,14 +321,14 @@
 
 			if (tempIT.flPar && (tempIT.flAssig||tempIT.flPrint))					// CHECK FOR VALID DECLARATION OF FACTIC PARAMETERS IN CALL OF FUNCTION
 			{
-				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA))
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-1].lexema!=LEX_ARITHMETIC))
 				{
 					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
 				}
 			}
 			else if (tempIT.flPar)								// CHECK FOR VALID DECLARATION OF FORMAL PARAMETERS IN DECLARE OF FUNCTION
 			{
-				if ((lexTable.table[lexTable.size-1].lexema!=LEX_TYPE)&&(lexTable.table[lexTable.size-2].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-2].lexema != LEX_LEFTHESIS))
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_TYPE)&&(lexTable.table[lexTable.size-2].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-2].lexema!=LEX_LEFTHESIS))
 				{
 					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
 				}

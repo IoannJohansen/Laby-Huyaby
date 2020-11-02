@@ -9,8 +9,8 @@
 #include "Out.h"
 #include "FST.h"
 #include "Scanner.h"
-#include "IT.h"
-#include "LT.h"
 #include <string>
 #include "arrFst.h"
+#include "IT.h"
+#include "LT.h"
 using namespace std;

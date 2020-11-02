@@ -1,7 +1,16 @@
 #pragma once
 #include "stdafx.h"
+#include "LT.h"
 #include "IT.h"
-namespace Lex {
+
+
+namespace Lex 
+{
+	struct Tables
+	{
+		LT::LexTable lexTable;
+		IT::IdTable idenTable;
+	};
 	struct TempIT
 	{
 		bool flPar, flDec, flAssig, flPrint;
@@ -17,7 +26,7 @@ namespace Lex {
 			this->brBalance = 0;
 		}
 	};
-	void textDivision(Out::OUT out);
+	Tables lexAnalyse(Out::OUT out);
 	bool tokenAnalyse(char* token);
 	bool checkForInteger(char* token);
 	bool checkForString(char* token);
