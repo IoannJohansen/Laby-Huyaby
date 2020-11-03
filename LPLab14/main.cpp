@@ -14,13 +14,20 @@ int wmain(int argc, wchar_t* argv[])
 		Out::OUT out = Out::getout(param.out, in);
 		Out::preparationForOut(&out);
 		Out::writeInsideTextTo_OutFile(out, param);
+
 		//-------LEX ANALYSE-------
+		
 		Lex::Tables tables = Lex::lexAnalyse(out);
+		
 		//-------------------------
+
 		//-------POLISH NOTATION---
+		
 		Polska::findForExpressions(tables.lexTable, tables.idenTable);
 		//Polska::PolishNotation(17, tables.lexTable, tables.idenTable);
+		
 		//-------------------------
+		
 		Log::WriteLog(log);
 		Log::WriteParm(log, param);
 		Log::WriteIn(log, in);

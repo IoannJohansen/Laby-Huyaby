@@ -53,9 +53,10 @@ namespace Error
 		ERROR_ENTRY(133, "Не объявлена главная функция main"),
 		//------------------LEXICAL ANALYSE
 		//------------------POLISH NOTATION
-		ERROR_ENTRY_NODEF(134),
-		ERROR_ENTRY_NODEF(135),
-		ERROR_ENTRY_NODEF(136),
+		ERROR_ENTRY(134, "Кол-во операции должно быть меньше либо равно кол-ва операндов"),
+		ERROR_ENTRY(135, "Кол-во открывающих скобочек не совпадает с кол-вом закрывающих"),
+		ERROR_ENTRY(136, "Результирующая строка длиннее исходной"),
+		//------------------POLISH NOTATION
 		ERROR_ENTRY_NODEF(137),
 		ERROR_ENTRY_NODEF(138),
 		ERROR_ENTRY_NODEF(139),

@@ -11,7 +11,7 @@
 8	{
 9	dti;
 10	dtfi(ti,ti,ti);
-11	i=ill@i+;
+11	i=i(i,l,l)+i;
 12	ri;
 13	};
 14	m
@@ -27,8 +27,8 @@
 24	i=l;
 25	i=l;
 26	i=l;
-27	i=ii@;
-28	i=ii@;
+27	i=i(iii+*,i);
+28	i=i(i,i);
 29	pl;
 30	pi;
 31	pi;

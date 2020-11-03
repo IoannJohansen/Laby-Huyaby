@@ -7,7 +7,7 @@ namespace In
 	/*0		  1		  2		  3		  4		  5		  6		  7		  8		  9	     A		  B	      C	      D	      E		  F*/\
 	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::T,	IN::T,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,\
 	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,\
-	IN::T,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::L,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::F,	IN::F,	IN::F,\
+	IN::T,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::L,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::F,	IN::T,\
 	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::T,	IN::F,	IN::T,	IN::F,	IN::T,	IN::F,	IN::F,\
 	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,\
 	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,	IN::F,\
