@@ -13,4 +13,5 @@
 #include "arrFst.h"
 #include "IT.h"
 #include "LT.h"
+#include "PolishNotation.h"
 using namespace std;

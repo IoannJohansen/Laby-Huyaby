@@ -43,5 +43,5 @@ namespace Lex
 	void addStrLiteral(char* token);
 	void addLex(char lexem);
 	void addIdent(char* token);
-	void outLexAndIdenTables(const wchar_t* in);
+	void outLexAndIdenTables(const wchar_t* in, Tables tables);
 }

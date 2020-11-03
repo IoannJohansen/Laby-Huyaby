@@ -39,6 +39,13 @@ namespace LT {
 		{
 			throw ERROR_THROW(125);
 		}
+		////----------------------------------------------------
+		//cout << "№\t" << "Lex\t" << endl;
+		//for (int i = 0; i < this->size ; i++)
+		//{
+		//	cout << i << '\t' << this->table[i].lexema << endl;
+		//}
+		////----------------------------------------------------
 		*lexStream << "\tТаблица лексем" << endl;
 		*lexStream << "---------------------" << endl;
 		if (lexStream->is_open())

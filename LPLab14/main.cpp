@@ -17,14 +17,14 @@ int wmain(int argc, wchar_t* argv[])
 		//-------LEX ANALYSE-------
 		Lex::Tables tables = Lex::lexAnalyse(out);
 		//-------------------------
-
 		//-------POLISH NOTATION---
-
+		Polska::findForExpressions(tables.lexTable, tables.idenTable);
+		//Polska::PolishNotation(17, tables.lexTable, tables.idenTable);
 		//-------------------------
 		Log::WriteLog(log);
 		Log::WriteParm(log, param);
 		Log::WriteIn(log, in);
-		Lex::outLexAndIdenTables(param.in);
+		Lex::outLexAndIdenTables(param.in, tables);
 		Log::Close(log);
 		Out::CloseOut(out);
 		LT::Delete(tables.lexTable);

@@ -4,14 +4,14 @@
 1	tfi(ti,ti)
 2	{
 3	dti;
-4	i=iv(ivi);
+4	i=iii+*;
 5	ri;
 6	};
 7	tfi(ti,ti)
 8	{
 9	dti;
 10	dtfi(ti,ti,ti);
-11	i=i(i,l,l)vi;
+11	i=ill@i+;
 12	ri;
 13	};
 14	m
@@ -27,8 +27,8 @@
 24	i=l;
 25	i=l;
 26	i=l;
-27	i=i(i,i);
-28	i=i(i,i);
+27	i=ii@;
+28	i=ii@;
 29	pl;
 30	pi;
 31	pi;

@@ -32,6 +32,7 @@ namespace Error
 		ERROR_ENTRY(113, "Файл, переданный как -in:, пуст"),
 		ERROR_ENTRY_NODEF(114),
 		ERROR_ENTRY_NODEF(115),
+		//------------------LEXICAL ANALYSE
 		ERROR_ENTRY(116, "Идентификатор не может совпадать с именем ключевого слова"),
 		ERROR_ENTRY(117, "Кол-во открывающих и закрывающих фигурных скобок не совпадает"),
 		ERROR_ENTRY(118, "Неверное объявление функции"),
@@ -50,6 +51,8 @@ namespace Error
 		ERROR_ENTRY(131, "Запрещенные символы в имени идетификатора"),
 		ERROR_ENTRY(132, "Слишком большое значение целочисленного литерала"),
 		ERROR_ENTRY(133, "Не объявлена главная функция main"),
+		//------------------LEXICAL ANALYSE
+		//------------------POLISH NOTATION
 		ERROR_ENTRY_NODEF(134),
 		ERROR_ENTRY_NODEF(135),
 		ERROR_ENTRY_NODEF(136),

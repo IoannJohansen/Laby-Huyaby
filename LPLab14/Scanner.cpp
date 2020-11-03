@@ -296,10 +296,22 @@
 			break; 
 			}
 			case LEX_RIGHTHESIS: {tempIT.flPar = false; return LEX_RIGHTHESIS;break; }
-			case LEX_PLUS: {return LEX_ARITHMETIC; break; }
-			case LEX_MINUS: {return LEX_ARITHMETIC; break; }
-			case LEX_STAR: {return LEX_ARITHMETIC; break; }
-			case LEX_DIRSLASH: {return LEX_ARITHMETIC; break; }
+			case LEX_PLUS: 
+			{
+				return LEX_PLUS; break; 
+			}
+			case LEX_MINUS: 
+			{
+				return LEX_MINUS; break;
+			}
+			case LEX_STAR: 
+			{
+				return LEX_STAR; break;
+			}
+			case LEX_DIRSLASH: 
+			{
+				return LEX_DIRSLASH; break; 
+			}
 			case LEX_EQUAL_SIGN: {
 				tempIT.flAssig = true;
 				return LEX_EQUAL_SIGN;
@@ -321,7 +333,7 @@
 
 			if (tempIT.flPar && (tempIT.flAssig||tempIT.flPrint))					// CHECK FOR VALID DECLARATION OF FACTIC PARAMETERS IN CALL OF FUNCTION
 			{
-				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-1].lexema!=LEX_ARITHMETIC))
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-1].lexema!=LEX_PLUS&& lexTable.table[lexTable.size - 1].lexema != LEX_MINUS&&lexTable.table[lexTable.size - 1].lexema != LEX_STAR&&lexTable.table[lexTable.size - 1].lexema != LEX_DIRSLASH))
 				{
 					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
 				}
@@ -488,9 +500,9 @@
 			tempIT.flDec = false;
 		}
 
-		void outLexAndIdenTables(const wchar_t* in)
+		void outLexAndIdenTables(const wchar_t* in, Tables tables)
 		{
-			lexTable.writeLT(in);
-			idenTable.writeIT(in);
+			tables.lexTable.writeLT(in);
+			tables.idenTable.writeIT(in);
 		}
 	}
