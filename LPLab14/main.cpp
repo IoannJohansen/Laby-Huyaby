@@ -24,7 +24,6 @@ int wmain(int argc, wchar_t* argv[])
 		//-------POLISH NOTATION---
 		
 		Polska::findForExpressions(tables.lexTable, tables.idenTable);
-		//Polska::PolishNotation(17, tables.lexTable, tables.idenTable);
 		
 		//-------------------------
 		

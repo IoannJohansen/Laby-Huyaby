@@ -32,6 +32,7 @@ namespace Error
 		ERROR_ENTRY(113, "Файл, переданный как -in:, пуст"),
 		ERROR_ENTRY_NODEF(114),
 		ERROR_ENTRY_NODEF(115),
+
 		//------------------LEXICAL ANALYSE
 		ERROR_ENTRY(116, "Идентификатор не может совпадать с именем ключевого слова"),
 		ERROR_ENTRY(117, "Кол-во открывающих и закрывающих фигурных скобок не совпадает"),
@@ -52,15 +53,17 @@ namespace Error
 		ERROR_ENTRY(132, "Слишком большое значение целочисленного литерала"),
 		ERROR_ENTRY(133, "Не объявлена главная функция main"),
 		//------------------LEXICAL ANALYSE
+
 		//------------------POLISH NOTATION
-		ERROR_ENTRY(134, "Кол-во операции должно быть меньше либо равно кол-ва операндов"),
+		ERROR_ENTRY(134, "Кол-во операции должно быть меньше кол-ва операндов"),
 		ERROR_ENTRY(135, "Кол-во открывающих скобочек не совпадает с кол-вом закрывающих"),
 		ERROR_ENTRY(136, "Результирующая строка длиннее исходной"),
+		ERROR_ENTRY(137, "Неверное выражение ()"),
+		ERROR_ENTRY(138, "Нарушен порядок скобок сначала - ( , потом - )"),
+		ERROR_ENTRY(139, "Выражение не может начинаться с операции"),
+		ERROR_ENTRY(140, "Недопустимый символ в выражений"),
 		//------------------POLISH NOTATION
-		ERROR_ENTRY_NODEF(137),
-		ERROR_ENTRY_NODEF(138),
-		ERROR_ENTRY_NODEF(139),
-		ERROR_ENTRY_NODEF10(140),	ERROR_ENTRY_NODEF10(150),	ERROR_ENTRY_NODEF10(160),
+		ERROR_ENTRY_NODEF10(150),	ERROR_ENTRY_NODEF10(160),
 		ERROR_ENTRY_NODEF10(170),	ERROR_ENTRY_NODEF10(180),	ERROR_ENTRY_NODEF10(190),
 		ERROR_ENTRY_NODEF100(200),	ERROR_ENTRY_NODEF100(300),	ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),	ERROR_ENTRY_NODEF100(600),	ERROR_ENTRY_NODEF100(700),

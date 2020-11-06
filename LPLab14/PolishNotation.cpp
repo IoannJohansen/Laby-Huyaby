@@ -1,188 +1,161 @@
 #include "stdafx.h"
+
 namespace Polska
 {
-	static bool inParameters = false;
 	void findForExpressions(LT::LexTable& lexTable, IT::IdTable& idenTable) 
 	{
+		//PolishNotation(17, lexTable, idenTable);
 		for (int i = 0; i < lexTable.size; i++)
 		{
-			if ((lexTable.table[i].lexema == LEX_ID) && (lexTable.table[i - 1].lexema == LEX_EQUAL_SIGN) && (lexTable.table[i + 1].lexema != LEX_LEFTHESIS))
-			{													// just expression
-				if (PolishNotation(i, lexTable, idenTable))
-				{
-					cout << endl << "ѕольска€ запись построена" << endl;
-				}
-				else
-				{
-					cout << "ѕольска€ запись не построена" << endl;
-				}
+			if (lexTable.table[i].lexema == LEX_EQUAL_SIGN && lexTable.table[i - 1].lexema == LEX_ID)
+			{
+				PolishNotation(++i, lexTable, idenTable);
 			}
-			else if ((lexTable.table[i].lexema == LEX_ID) && ((lexTable.table[i-1].lexema == LEX_LEFTHESIS)||(lexTable.table[i-1].lexema == LEX_COMMA))&&((lexTable.table[i + 1].lexema == LEX_PLUS)||(lexTable.table[i + 1].lexema == LEX_MINUS)||(lexTable.table[i + 1].lexema == LEX_DIRSLASH)||(lexTable.table[i + 1].lexema == LEX_STAR)))
-			{// factic call of function
-				inParameters = true;
-				if (PolishNotation(i, lexTable, idenTable))
-				{
-					cout << endl << "ѕольска€ запись построена" << endl;
-				}
-				else
-				{
-					cout << "ѕольска€ запись не построена" << endl;
-				}
-				inParameters = false;
-			}
-		}
 
+		}
 	}
 	bool PolishNotation(int lexPos, LT::LexTable& lexTable, IT::IdTable& idenTable)
 	{
-		std::stack<LT::Entry> stack;
-		LT::Entry outStr[200];
-		int len = 0, lenOut = 0, countHesis = 0, semiColonId = 0, indexOfFuntion = 0;
-		int countOfOperands = 0, countOfOperations = 0, brBalance = 0;		// FOR DETECKTING OF ERRORS
-		char current, oper=NULL;
-
-
-		for (int i = lexPos; (lexTable.table[i].lexema != LEX_SEMICOLON)&&(lexTable.table[i].lexema!=LEX_COMMA); i++)		// выражение до , либо до ; либо до ) если inPrameteres = true
+		//DETECKTING ERRORS
+		if (lexTable.table[lexPos].lexema == LEX_ID && lexTable.table[lexPos + 1].lexema == LEX_LEFTHESIS)return false;
+		if ((lexTable.table[lexPos].lexema == LEX_ID|| lexTable.table[lexPos].lexema == LEX_LITERAL)&& lexTable.table[lexPos + 1].lexema == LEX_SEMICOLON)return false;
+		if (lexTable.table[lexPos].lexema == LEX_PLUS || lexTable.table[lexPos].lexema == LEX_MINUS || lexTable.table[lexPos].lexema == LEX_DIRSLASH || lexTable.table[lexPos].lexema == LEX_STAR)throw ERROR_THROW(139);
+		//DETECKTING ERRORS
+		stack<LT::Entry> stack;
+		LT::Entry resStr[200];
+		int srcLen = 0, outLen = 0, semicolonId = 0, counter = 0;
+		//for error checking
+		int brBalance = 0, countOperands = 0, countOperations = 0;
+		//for error checking
+		for (int i = lexPos; lexTable.table[i].lexema!=LEX_SEMICOLON; i++)		// read do semicolona
 		{
-			if (inParameters&& (lexTable.table[i].lexema == LEX_RIGHTHESIS)&&(lexTable.table[i+1].lexema == LEX_SEMICOLON))
+			srcLen++;
+			semicolonId = i + 1;
+		}
+		srcLen++;					// чтоб выводилась ;
+
+		for (int i = lexPos; i < lexPos + srcLen; i++)		// expression analyse
+		{
+			counter++;
+			switch (lexTable.table[i].lexema)
 			{
-				i--;
+			case LEX_LITERAL://џјџјџјџјџџјџјџџџџџџџџџџџџјјјјјјјјџјџјџјџјџјџјџјџјџјџџјџј
+			case LEX_ID:	//операнды перенос€тс€ в результирующую строку в пор€дке их следовани€
+			{
+				countOperands++;
+				resStr[outLen++] = lexTable.table[i];
 				break;
 			}
-			//-------------
-			if ((lexTable.table[i].lexema == LEX_ID)||(lexTable.table[i].lexema == LEX_LITERAL))countOfOperands++;
-			if ((lexTable.table[i].lexema == LEX_PLUS)||(lexTable.table[i].lexema == LEX_MINUS)||(lexTable.table[i].lexema == LEX_STAR)||(lexTable.table[i].lexema == LEX_DIRSLASH))countOfOperations++;
-			if (lexTable.table[i].lexema == LEX_LEFTHESIS)brBalance++;
-			if (lexTable.table[i].lexema == LEX_RIGHTHESIS)brBalance--;
-			//-------------
-			len = i;
-			semiColonId = i + 1;
-		}
-		len++;
-
-		//-------CHECK----------------
-		if (countOfOperands < countOfOperations)throw ERROR_THROW(134);
-		if (brBalance != 0)throw ERROR_THROW(135);
-		if ((lexTable.table[lexPos].lexema == LEX_PLUS) || (lexTable.table[lexPos].lexema == LEX_MINUS) || (lexTable.table[lexPos].lexema == LEX_STAR) || (lexTable.table[lexPos].lexema == LEX_DIRSLASH))throw ERROR_THROW(137);
-
-
-		//-------CHECK----------------
-
-		for (int i = lexPos; i < len; i++)
-		{
-			current = lexTable.table[i].lexema;
-
-			if ((lexTable.table[i].lexema == LEX_PLUS) || (lexTable.table[i].lexema == LEX_MINUS) || (lexTable.table[i].lexema == LEX_DIRSLASH) || (lexTable.table[i].lexema == LEX_STAR))
-				oper = lexTable.table[i].lexema/*idenTable.table[lexTable.table[i].idxTI].id[0]*/;
-
-			if (current == LEX_RIGHTHESIS)
+			case LEX_PLUS:
+			case LEX_MINUS:
+			case LEX_STAR:
+			case LEX_DIRSLASH:
 			{
+				countOperations++;
+				if (stack.empty() || stack.top().lexema == LEX_LEFTHESIS)// операци€ записываетс€ в стек, если стек пуст или в вершине стека лежит открывающа€ скобка	
+				{
+					stack.push(lexTable.table[i]);
+					break;
+				}
+
+
+				while ((ArifmPriorities(stack.top().lexema) >= ArifmPriorities(lexTable.table[i].lexema)))
+				{		// операци€ выталкивает все операции с большим или равным приоритетом в результирующую строку
+					resStr[outLen++] = stack.top();
+					stack.pop();
+					if (stack.empty())break;		// -!!!
+				}
+				stack.push(lexTable.table[i]);		// push of arifm sign
+				break;
+			}
+			
+
+			case LEX_LEFTHESIS:		//  открывающа€ скобка помещаетс€ в стек
+			{
+				if (lexTable.table[i + 1].lexema == LEX_RIGHTHESIS)throw ERROR_THROW(137);
+				brBalance++;
+				stack.push(lexTable.table[i]);
+				break;
+			}
+
+			case LEX_RIGHTHESIS:	// закрывающа€ скобка выталкивает все операции до открывающей скобки, после чего обе скобки уничтожаютс€
+			{
+				if (brBalance <= 0)throw ERROR_THROW(138);
+				brBalance--;
 				while (stack.top().lexema != LEX_LEFTHESIS)
 				{
-					outStr[lenOut++] = stack.top();		// запись в стек символа между скобками
-					countHesis++;
-					stack.pop();	// снимаем вершину стека
+					resStr[outLen++] = stack.top();
+					stack.pop();
 				}
-				stack.pop();		// удал€ем (
+				stack.pop();
+				break;
+			}
+			case LEX_SEMICOLON:break;		// bas symbol in expression
+			default:
+			{
+				throw ERROR_THROW(140);
+				break;
+			}
 			}
 
-			if (current == LEX_ID || current == LEX_LITERAL)
+			if ((counter==srcLen)&&(!stack.empty()))	// по концу разбора исходной строки все операции, оставшиес€ в стеке, выталкиваютс€ в результирующую строку
 			{
-				if (lexTable.table[i + 1].lexema == LEX_LEFTHESIS)
+				while (!stack.empty())
 				{
-					indexOfFuntion = i;		// index of function
-					i += 2;
-					while (lexTable.table[i].lexema != LEX_RIGHTHESIS)
-					{
-						if (lexTable.table[i].lexema != LEX_COMMA)
-						{
-							outStr[lenOut++] = lexTable.table[i++];
-						}
-						else
-						{
-							countHesis++;
-							i++;
-						}
-					}
-					outStr[lenOut++] = lexTable.table[indexOfFuntion];
-					outStr[lenOut - 1].lexema = LEX_NEWPROC;
-					countHesis += 2;
-				}
-				else
-					outStr[lenOut++] = lexTable.table[i];
-			}
-
-			if (current == LEX_LEFTHESIS)
-			{
-				stack.push(lexTable.table[i]);							//помещаем в стек левую скобку
-				countHesis++;
-			}
-
-			if (oper == '+' || oper == '-' || oper == '*' || oper == '/')
-			{
-				if (!stack.size())
-					stack.push(lexTable.table[i]);
-				else
-				{
-					int pr, id;
-					if (stack.top().lexema == '(' || stack.top().lexema == ')')
-						pr = 1;
-					else
-					{
-						id = stack.top().idxTI;
-						pr = ArifmPriorities(idenTable.table[id].id[0]);
-					}
-
-					if (ArifmPriorities(oper) > pr)
-						stack.push(lexTable.table[i]);
-					else
-					{
-						while (stack.size() && ArifmPriorities(oper) <= ArifmPriorities(idenTable.table[id].id[0]))			//если меньше, то записываем в строку все операции с большим или равным приоритетом
-						{
-							outStr[lenOut] = stack.top();
-							stack.pop();
-							lenOut++;
-						}
-						stack.push(lexTable.table[i]);
-					}
+					resStr[outLen++] = stack.top();
+					stack.pop();
 				}
 			}
-			oper = NULL;
-		}
 
-		while (stack.size())
+			if (brBalance < 0)throw ERROR_THROW(138);
+
+		}
+		//------CHECKING FOR ERRORS
+
+		if (brBalance != 0)throw ERROR_THROW(135);
+		if (countOperations >= countOperands)throw ERROR_THROW(134);
+		if (outLen > srcLen)throw ERROR_THROW(136);
+		//------CHECKING FOR ERRORS
+
+
+		cout << "ѕольска€ нотаци выполнена" << endl;
+		cout << "»сходное выражение: " << endl;
+		for (int i = lexPos; i < lexPos + srcLen; i++)
 		{
-			outStr[lenOut++] = stack.top();												//вывод в строку всех знаков из стека
-			stack.pop();
+			cout << lexTable.table[i].lexema << ' ';
 		}
 
-		len = len - lexPos;
-		if (lenOut > len)throw ERROR_THROW(136);
-
-		for (int i = lexPos, k = 0; i < lexPos + lenOut; i++, k++)
-		{
-			lexTable.table[i] = outStr[k];												//запись в таблицу польской записи
-		}
 		
 		
-		lexTable.table[lexPos + lenOut] = lexTable.table[semiColonId];			//вставка элемента с точкой с зап€той
-
-
-		for (int i = 0; i < countHesis; i++)
+		//EDIT THE TABLE
+		for (int i = lexPos, k = 0; i < lexPos+outLen; i++, k++)
 		{
-			for (int j = lexPos + lenOut + 1; j < lexTable.size; j++)				//сдвигаем на лишнее место
+			lexTable.table[i] = resStr[k];
+		}
+		int diff = srcLen-outLen-1;
+
+		lexTable.table[semicolonId-diff].lexema = LEX_SEMICOLON;
+		
+		for (int i = 0; i < diff; i++)					// sdvig of table for offset because less skobocheck then bylo
+		{
+			for (int i = lexPos + outLen + 1; i < lexTable.size; i++)
 			{
-				lexTable.table[j] = lexTable.table[j + 1];
+				lexTable.table[i] = lexTable.table[i + 1];
 			}
 			lexTable.size--;
 		}
-
-		//--------------
-		cout << "«апись выполнена: " << endl;
-		for (int i = 0; i < lenOut; i++)
+		//EDIT THE TABLE
+		
+		//-----OUT
+		cout << endl;
+		cout << "–езультат: " << endl;
+		for (int i = lexPos; i < lexPos+outLen; i++)
 		{
-			cout << outStr[i].lexema << ' ';
+			cout << lexTable.table[i].lexema << ' ';
 		}
+		cout << endl << endl;
+		//-----OUT
+
 		return true;
 	}
 	int ArifmPriorities(char symb)
@@ -191,7 +164,7 @@ namespace Polska
 			return 1;
 		if (symb == LEX_PLUS || symb == LEX_MINUS)
 			return 2;
-		if (symb == LEX_STAR)
+		if (symb == LEX_STAR || symb == LEX_DIRSLASH)
 			return 3;
 	}
 }
