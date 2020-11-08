@@ -4,7 +4,6 @@ namespace Polska
 {
 	void findForExpressions(LT::LexTable& lexTable, IT::IdTable& idenTable) 
 	{
-		//PolishNotation(17, lexTable, idenTable);
 		for (int i = 0; i < lexTable.size; i++)
 		{
 			if (lexTable.table[i].lexema == LEX_EQUAL_SIGN && lexTable.table[i - 1].lexema == LEX_ID)
@@ -19,7 +18,7 @@ namespace Polska
 		//DETECKTING ERRORS
 		if (lexTable.table[lexPos].lexema == LEX_ID && lexTable.table[lexPos + 1].lexema == LEX_LEFTHESIS)return false;
 		if ((lexTable.table[lexPos].lexema == LEX_ID|| lexTable.table[lexPos].lexema == LEX_LITERAL)&& lexTable.table[lexPos + 1].lexema == LEX_SEMICOLON)return false;
-		if (lexTable.table[lexPos].lexema == LEX_PLUS || lexTable.table[lexPos].lexema == LEX_MINUS || lexTable.table[lexPos].lexema == LEX_DIRSLASH || lexTable.table[lexPos].lexema == LEX_STAR)throw ERROR_THROW(139);
+		if (lexTable.table[lexPos].lexema == LEX_ARITHMETIC)throw ERROR_THROW(139);
 		//DETECKTING ERRORS
 		stack<LT::Entry> stack;
 		LT::Entry resStr[200];
@@ -46,10 +45,7 @@ namespace Polska
 				resStr[outLen++] = lexTable.table[i];
 				break;
 			}
-			case LEX_PLUS:
-			case LEX_MINUS:
-			case LEX_STAR:
-			case LEX_DIRSLASH:
+			case LEX_ARITHMETIC:
 			{
 				countOperations++;
 				if (stack.empty() || stack.top().lexema == LEX_LEFTHESIS)// операция записывается в стек, если стек пуст или в вершине стека лежит открывающая скобка	
@@ -59,7 +55,7 @@ namespace Polska
 				}
 
 
-				while ((ArifmPriorities(stack.top().lexema) >= ArifmPriorities(lexTable.table[i].lexema)))
+				while ((ArifmPriorities(stack.top(), idenTable) >= ArifmPriorities(lexTable.table[i], idenTable)))
 				{		// операция выталкивает все операции с большим или равным приоритетом в результирующую строку
 					resStr[outLen++] = stack.top();
 					stack.pop();
@@ -158,13 +154,13 @@ namespace Polska
 
 		return true;
 	}
-	int ArifmPriorities(char symb)
+	int ArifmPriorities(LT::Entry entrit, IT::IdTable idenT)
 	{
-		if (symb == LEX_LEFTHESIS || symb == LEX_RIGHTHESIS)
+		if (idenT.table[entrit.idxTI].id[0] == LEX_LEFTHESIS || idenT.table[entrit.idxTI].id[0] == LEX_RIGHTHESIS)
 			return 1;
-		if (symb == LEX_PLUS || symb == LEX_MINUS)
+		if (idenT.table[entrit.idxTI].id[0] == LEX_PLUS || idenT.table[entrit.idxTI].id[0] == LEX_MINUS)
 			return 2;
-		if (symb == LEX_STAR || symb == LEX_DIRSLASH)
+		if (idenT.table[entrit.idxTI].id[0] == LEX_STAR || idenT.table[entrit.idxTI].id[0] == LEX_DIRSLASH)
 			return 3;
 	}
 }

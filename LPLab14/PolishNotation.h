@@ -7,5 +7,5 @@ namespace Polska
 {
 	void findForExpressions(LT::LexTable& lexTable, IT::IdTable& idenTable);
 	bool PolishNotation(int lexPos, LT::LexTable& lexTable, IT::IdTable& idenTable);
-	int ArifmPriorities(char symb);
+	int ArifmPriorities(LT::Entry entrit, IT::IdTable idenT);
 }

@@ -43,7 +43,7 @@ namespace LT {
 		/*cout << "№\t" << "Lex\t" << endl;
 		for (int i = 0; i < this->size ; i++)
 		{
-			cout << i << '\t' << this->table[i].lexema << endl;
+			cout << i << '\t' << this->table[i].lexema << "		|		" << this->table[i].idxTI << "		|		"  << endl;
 		}*/
 		//----------------------------------------------------
 		*lexStream << "\tТаблица лексем" << endl;

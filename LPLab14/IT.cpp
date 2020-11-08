@@ -145,7 +145,7 @@ namespace IT
 			{
 				if (this->table[i].idtype == IT::IDTYPE::P)
 				{
-					strcat_s(buf, "  ");
+					strcat_s(buf, "   ");
 
 					if (flagForFirst)
 						*(idStream) << "-------------------------------------------------------------------------" << std::endl;

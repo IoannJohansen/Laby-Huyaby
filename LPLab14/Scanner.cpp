@@ -13,14 +13,6 @@
 			int numLetter = 0;
 			for (int i = 0; out.text[i] != '\0'; i++, tempIT.posNumber++)
 			{
-
-				if (out.text[i+1] == '\0')
-				{
-					if (tempIT.brBalance != 0)
-					{
-						throw ERROR_THROW_IN(117, tempIT.numLine+1, 0);					//--!!!
-					}
-				}
 				if ((out.codeForOut[out.text[i]]==Out::OUT::S)&&(out.codeForOut[out.text[i-1]]==Out::OUT::I))
 				{
 					buff[numLetter] = '\0';
@@ -79,6 +71,13 @@
 				{
 					buff[numLetter++] = out.text[i];
 				}
+				if (out.text[i + 1] == '\0')
+				{
+					if (tempIT.brBalance != 0)
+					{
+						throw ERROR_THROW_IN(117, tempIT.numLine + 1, 0);					//--!!!
+					}
+				}
 
 			}
 
@@ -122,10 +121,24 @@
 				addLex(LEX_MAIN);
 				return true;
 			}
-			if (((token[0] == checkForArithmeticTokens(token)) || (checkForArithmeticTokens(token) == LEX_ARITHMETIC)) && strlen(token) == 1)
+			if ((token[0] == checkForArithmeticTokens(token)) && strlen(token) == 1)
 			{
 				char symbol = checkForArithmeticTokens(token);
-				addLex(symbol);
+				if ((symbol == LEX_PLUS) || (symbol == LEX_MINUS) || (symbol == LEX_DIRSLASH) || (symbol == LEX_STAR))
+				{
+					addLex(LEX_ARITHMETIC);
+					//---------------------!!!!!!!!!!!!!!!!!!!!!!!!
+					char* symC = new char[2];
+					symC[0] = symbol;
+					symC[1] = '\0';
+					IT::Entry entrit;
+					strcpy(entrit.id, symC);
+					IT::Add(idenTable, entrit);
+				}
+				else
+				{
+					addLex(symbol);
+				}
 				return true;
 			}
 			if (checkForStringLiteral(token))
@@ -333,7 +346,7 @@
 
 			if (tempIT.flPar && (tempIT.flAssig||tempIT.flPrint))					// CHECK FOR VALID DECLARATION OF FACTIC PARAMETERS IN CALL OF FUNCTION
 			{
-				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size-1].lexema!=LEX_PLUS&& lexTable.table[lexTable.size - 1].lexema != LEX_MINUS&&lexTable.table[lexTable.size - 1].lexema != LEX_STAR&&lexTable.table[lexTable.size - 1].lexema != LEX_DIRSLASH))
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size - 1].lexema != LEX_ARITHMETIC))		// -------!!!!!!!!!!!!!!!
 				{
 					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
 				}
@@ -469,7 +482,7 @@
 			LT::Entry tempEntry;                             // временная лексема
 			tempEntry.lexema = lexem;
 			tempEntry.sn = tempIT.numLine;
-			if (lexem == LEX_ID)
+			if (lexem == LEX_ID || lexem == LEX_ARITHMETIC)		// !!!!
 				tempEntry.idxTI = idenTable.size;
 			else
 				tempEntry.idxTI = LT_TI_NULLXDX;

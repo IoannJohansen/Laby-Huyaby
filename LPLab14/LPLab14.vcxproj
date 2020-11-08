@@ -141,8 +141,10 @@
   <ItemGroup>
     <ClCompile Include="Error.cpp" />
     <ClCompile Include="FST.cpp" />
+    <ClCompile Include="GRB.cpp" />
     <ClCompile Include="In.cpp" />
     <ClCompile Include="IT.cpp" />
+    <ClCompile Include="MFST.cpp" />
     <ClCompile Include="PolishNotation.cpp" />
     <ClCompile Include="Scanner.cpp" />
     <ClCompile Include="Log.cpp" />
@@ -155,8 +157,10 @@
     <ClInclude Include="arrFst.h" />
     <ClInclude Include="Error.h" />
     <ClInclude Include="FST.h" />
+    <ClInclude Include="GRB.h" />
     <ClInclude Include="In.h" />
     <ClInclude Include="IT.h" />
+    <ClInclude Include="MFST.h" />
     <ClInclude Include="PolishNotation.h" />
     <ClInclude Include="Scanner.h" />
     <ClInclude Include="Log.h" />

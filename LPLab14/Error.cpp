@@ -63,7 +63,19 @@ namespace Error
 		ERROR_ENTRY(139, "Выражение не может начинаться с операции"),
 		ERROR_ENTRY(140, "Недопустимый символ в выражений"),
 		//------------------POLISH NOTATION
-		ERROR_ENTRY_NODEF10(150),	ERROR_ENTRY_NODEF10(160),
+		ERROR_ENTRY_NODEF10(150),
+		//------------------SYNTAX ANAL
+		ERROR_ENTRY(160, "Неверная структура прграммы"),
+		ERROR_ENTRY_NODEF(161, "Оишбочный оператор"),
+		ERROR_ENTRY_NODEF(162, "Ошибка в выражении"),
+		ERROR_ENTRY_NODEF(163, "Ошибка в параметрах функции"),
+		ERROR_ENTRY_NODEF(164, "Ошибка в параметрах вызываемой функции"),
+		ERROR_ENTRY_NODEF(165),
+		ERROR_ENTRY_NODEF(166),
+		ERROR_ENTRY_NODEF(167),
+		ERROR_ENTRY_NODEF(168),
+		ERROR_ENTRY_NODEF(169),
+		//------------------SYNTAX ANAL
 		ERROR_ENTRY_NODEF10(170),	ERROR_ENTRY_NODEF10(180),	ERROR_ENTRY_NODEF10(190),
 		ERROR_ENTRY_NODEF100(200),	ERROR_ENTRY_NODEF100(300),	ERROR_ENTRY_NODEF100(400),
 		ERROR_ENTRY_NODEF100(500),	ERROR_ENTRY_NODEF100(600),	ERROR_ENTRY_NODEF100(700),
