@@ -151,7 +151,8 @@
 				addLex(LEX_LITERAL);
 				return true;
 			}
-			if (checkForId(token)) {
+			if (checkForId(token)) 
+			{
 				addLex(LEX_ID);
 				return true;
 			}
@@ -212,7 +213,7 @@
 			FST::FST* a_function = new FST::FST(A_FUNCTION(token));
 			if (FST::execute(*a_function))
 			{
-				entryIT.idtype = IT::F;
+				entryIT.idtype = IT::F;		//--!
 				delete a_function;
 				a_function = nullptr;
 				return true;
@@ -482,8 +483,10 @@
 			LT::Entry tempEntry;                             // временная лексема
 			tempEntry.lexema = lexem;
 			tempEntry.sn = tempIT.numLine;
-			if (lexem == LEX_ID || lexem == LEX_ARITHMETIC)		// !!!!
+			if (lexem == LEX_ID || lexem == LEX_ARITHMETIC) 
+			{		// !!!!
 				tempEntry.idxTI = idenTable.size;
+			}
 			else
 				tempEntry.idxTI = LT_TI_NULLXDX;
 			LT::Add(lexTable, tempEntry);

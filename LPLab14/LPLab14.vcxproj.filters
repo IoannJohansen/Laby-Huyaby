@@ -104,6 +104,7 @@
     <Text Include="log.log" />
     <Text Include="i.txt.id.txt" />
     <Text Include="i.txt.lex.txt" />
+    <Text Include="i1.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="out.out" />

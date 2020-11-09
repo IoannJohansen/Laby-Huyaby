@@ -173,6 +173,7 @@
     <Text Include="i.txt" />
     <Text Include="i.txt.id.txt" />
     <Text Include="i.txt.lex.txt" />
+    <Text Include="i1.txt" />
     <Text Include="log.log" />
   </ItemGroup>
   <ItemGroup>
