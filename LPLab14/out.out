@@ -1,5 +1,8 @@
 main|
 {|
 	declare integer z;|
-	z=1+5/3;|
+	declare integer x;|
+	declare integer y;|
+	z=x+y;|
+	return 0;|
 }|
