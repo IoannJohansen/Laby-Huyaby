@@ -2,7 +2,7 @@
 
 namespace Polska
 {
-	void findForExpressions(LT::LexTable& lexTable, IT::IdTable& idenTable) 
+	void findForExpressions(LT::LexTable& lexTable, IT::IdTable& idenTable)		// TODO : ADD PROCESSING OF EXPRESSIONS WITH FUNCTION CALL'S
 	{
 		for (int i = 0; i < lexTable.size; i++)
 		{
@@ -16,9 +16,9 @@ namespace Polska
 	bool PolishNotation(int lexPos, LT::LexTable& lexTable, IT::IdTable& idenTable)
 	{
 		//DETECKTING ERRORS
-		if (lexTable.table[lexPos].lexema == LEX_ID && lexTable.table[lexPos + 1].lexema == LEX_LEFTHESIS)return false;
+		if (lexTable.table[lexPos].lexema == LEX_ID && lexTable.table[lexPos + 1].lexema == LEX_LEFTHESIS)return false;	// we dont checking expressions with functions
 		if ((lexTable.table[lexPos].lexema == LEX_ID|| lexTable.table[lexPos].lexema == LEX_LITERAL)&& lexTable.table[lexPos + 1].lexema == LEX_SEMICOLON)return false;
-		if (lexTable.table[lexPos].lexema == LEX_ARITHMETIC)throw ERROR_THROW(139);
+		if (lexTable.table[lexPos].lexema == LEX_ARITHMETIC && idenTable.table[lexTable.table[lexPos].idxTI].id[0]!=LEX_MINUS)throw ERROR_THROW(139);
 		//DETECKTING ERRORS
 		stack<LT::Entry> stack;
 		LT::Entry resStr[200];
@@ -26,10 +26,12 @@ namespace Polska
 		//for error checking
 		int brBalance = 0, countOperands = 0, countOperations = 0;
 		//for error checking
-		for (int i = lexPos; lexTable.table[i].lexema!=LEX_SEMICOLON; i++)		// read do semicolona
+		for (int i = lexPos; (lexTable.table[i].lexema!=LEX_SEMICOLON); i++)		// read do semicolona
 		{
 			srcLen++;
 			semicolonId = i + 1;
+			if ((lexTable.table[i].lexema == LEX_ID) && (lexTable.table[i + 1].lexema == LEX_LEFTHESIS))throw ERROR_THROW(141);	 //----!!!!!!
+			if (lexTable.table[i].lexema == LEX_ARITHMETIC && lexTable.table[i - 1].lexema == LEX_ARITHMETIC)throw ERROR_THROW(142);	 // bad interchange of operand - operation
 		}
 		srcLen++;					// ÷òîá âûâîäèëàñü ;
 
@@ -38,7 +40,7 @@ namespace Polska
 			counter++;
 			switch (lexTable.table[i].lexema)
 			{
-			case LEX_LITERAL://ÛÀÛÀÛÀÛÀÛÛÀÛÀÛÛÛÛÛÛÛÛÛÛÛÛÀÀÀÀÀÀÀÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÛÀÛÀ
+			case LEX_LITERAL:	//ÛÀÛÀÛÀÛÀÛÛÀÛÀÛÛÛÛÛÛÛÛÛÛÛÛÀÀÀÀÀÀÀÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÛÀÛÀÛÀÛÀÛÀÛÀÛÛÀÛÀÛÛÛÛÛÛÛÛÛÛÛÛÀÀÀÀÀÀÀÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÀÛÛÀÛÀ
 			case LEX_ID:	//îïåðàíäû ïåðåíîñÿòñÿ â ðåçóëüòèðóþùóþ ñòðîêó â ïîðÿäêå èõ ñëåäîâàíèÿ
 			{
 				countOperands++;
@@ -87,7 +89,8 @@ namespace Polska
 				break;
 			}
 			case LEX_SEMICOLON:break;		// bas symbol in expression
-			default:
+
+			default:						// UNCKNOWED SYMBOLS IN EXPRESSION
 			{
 				throw ERROR_THROW(140);
 				break;
@@ -109,7 +112,7 @@ namespace Polska
 		//------CHECKING FOR ERRORS
 
 		if (brBalance != 0)throw ERROR_THROW(135);
-		if (countOperations >= countOperands)throw ERROR_THROW(134);
+		if (countOperations > countOperands)throw ERROR_THROW(134);
 		if (outLen > srcLen)throw ERROR_THROW(136);
 		//------CHECKING FOR ERRORS
 

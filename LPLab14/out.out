@@ -1,7 +1,8 @@
 integer function fi(integer x,integer y)|
 {|
 	declare integer z;|
-	z=x+y;|
+	z=x+(x/y)/1/2+3/x;|
+	z=-x+y;|
 	return z;|
 };|
 string function fs(string a,string b)|

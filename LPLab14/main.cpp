@@ -14,21 +14,19 @@ int wmain(int argc, wchar_t* argv[])
 		Out::OUT out = Out::getout(param.out, in);
 		Out::preparationForOut(&out);
 		Out::writeInsideTextTo_OutFile(out, param);
+
 		//-------LEX ANALYSE-------
 		Lex::Tables tables = Lex::lexAnalyse(out);
 		//-------------------------
 
-
 		//-------SYNTAX ANALYSE----
-		MFST_TRACE_START;
+		/*MFST_TRACE_START;
 		MFST::Mfst mfst(tables, GRB::getGreibach());
-		mfst.start();
-		/*mfst.savededucation();
-		mfst.printrules();*/
+		mfst.start();*/
 		//-------------------------
 		
 		//-------POLISH NOTATION---
-		//Polska::findForExpressions(tables.lexTable, tables.idenTable);
+		Polska::findForExpressions(tables.lexTable, tables.idenTable);
 		//-------------------------
 
 		Log::WriteLog(log);

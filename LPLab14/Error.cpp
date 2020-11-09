@@ -62,6 +62,15 @@ namespace Error
 		ERROR_ENTRY(138, "Нарушен порядок скобок сначала - ( , потом - )"),
 		ERROR_ENTRY(139, "Выражение не может начинаться с операции"),
 		ERROR_ENTRY(140, "Недопустимый символ в выражений"),
+		ERROR_ENTRY(141, "Пропущен знак операции перед скобкой"),
+		ERROR_ENTRY(142, "Нарушение чередования: операнд-операция"),
+		ERROR_ENTRY_NODEF(143),
+		ERROR_ENTRY_NODEF(144),
+		ERROR_ENTRY_NODEF(145),
+		ERROR_ENTRY_NODEF(146),
+		ERROR_ENTRY_NODEF(147),
+		ERROR_ENTRY_NODEF(148),
+		ERROR_ENTRY_NODEF(149),
 		//------------------POLISH NOTATION
 		ERROR_ENTRY_NODEF10(150),
 		//------------------SYNTAX ANAL
