@@ -1,6 +1,7 @@
-#include "GRB.h"
+#include "stdafx.h"
 #include <cstring>
-#define GRB_ERROR_SERIES 600
+#define GRB_ERROR_SERIES 160
+
 namespace GRB
 {
 	/*
@@ -11,8 +12,9 @@ namespace GRB
 		F -> ti | ti,F
 		W -> i | l | i,W | l,W
 	*/
+
 	Greibach greibach(NS('S'), TS('$')				// стартовый символ / дно стека
-		, 6
+		, 6											
 		, Rule(NS('S'), GRB_ERROR_SERIES + 0, 3		// структура программы
 			, Rule::Chain(8, TS('m'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'))
 			, Rule::Chain(14, TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS('{'), NS('N'), TS('r'), NS('E'), TS(';'), TS('}'), TS(';'), NS('S'))
@@ -24,7 +26,7 @@ namespace GRB
 			, Rule::Chain(8, TS('d'), TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS(';'))
 			, Rule::Chain(7, TS('d'), TS('t'), TS('i'), TS('('), NS('F'), TS(')'), TS(';'))
 			, Rule::Chain(5, TS('d'), TS('t'), TS('i'), TS(';'), NS('N'))
-			, Rule::Chain(4, TS('r'), TS('e'), TS(';'), NS('N'))
+			, Rule::Chain(4, TS('r'), NS('E'), TS(';'), NS('N'))
 			, Rule::Chain(5, TS('i'), TS('='), NS('E'), TS(';'), NS('N'))
 			, Rule::Chain(9, TS('d'), TS('t'), TS('f'), TS('i'), TS('('), NS('F'), TS(')'), TS(';'), NS('N'))
 			, Rule::Chain(8, TS('d'), TS('t'), TS('i'), TS('('), NS('F'), TS(')'), TS(';'), NS('N'))
@@ -61,7 +63,7 @@ namespace GRB
 	}
 
 	Rule::Rule(GRBALPHABET pnn, int piderror, short psize, Chain c, ...)		//конструктор правила
-	{//(нетерминал, идентификатор диагностического сообщения, количество цепочек(правых частей правила), множество цепочек (правых частей правила)
+	{				//(нетерминал, идентификатор диагностического сообщения, количество цепочек(правых частей правила), множество цепочек (правых частей правила)
 		nn = pnn;				//нетерминал
 		iderror = piderror;		//идентификатор
 		chains = new Chain[size = psize];	//место для цепочки
@@ -71,7 +73,7 @@ namespace GRB
 	}
 
 	Greibach::Greibach(GRBALPHABET pstartN, GRBALPHABET pstbottom, short psize, Rule r, ...)
-	{//конструктор гграматики Грейбаха(стартовый символ, дно стека, количество правил, правила...)
+	{				//конструктор гграматики Грейбаха(стартовый символ, дно стека, количество правил, правила...)
 		startN = pstartN;		//стартовый символ
 		stbottomT = pstbottom;	//дно стека
 		rules = new Rule[size = psize];	//выделяем память

@@ -1,6 +1,5 @@
 #include "MFST.h"
-
-template<class T>T getStackElement(const std::stack<T>& st, size_t element)			// костыль для _Get_Container
+template<class T>T getStackElement(const std::stack<T>& st, size_t element)
 {
 	using base = std::stack<T>;
 	struct acces : base { using base::c; };
@@ -75,7 +74,7 @@ namespace MFST
 				{
 					GRB::Rule::Chain chain;
 					if ((nrulechain = rule.getNextChain(lenta[lenta_position], chain, nrulechain + 1)) >= 0)
-					{									   //получаем следующую цепочку и выводим её номер, илбо возвращаем -1
+					{									   //получаем следующую цепочку и выводим её номер, либо возвращаем -1
 						char lbuf[256];
 						char rbuf[256];
 						char sbuf[256];
@@ -206,7 +205,7 @@ namespace MFST
 		return rc;
 	}
 
-	char* Mfst::getCSt(char* buf)
+	char* Mfst::getCSt(char* buf)	//заполняет буфер содержимым стека для отображения
 	{
 		for (int k = (signed)st.size() - 1; k >= 0; --k)
 		{
@@ -217,7 +216,7 @@ namespace MFST
 		return buf;
 	}
 
-	char* Mfst::getCLenta(char* buf, short pos, short n)
+	char* Mfst::getCLenta(char* buf, short pos, short n)	//заполняет буфер содержимым ленты с заданной позиции заданное количество символов  для отображения,
 	{
 		short i, k = (pos + n < lenta_size) ? pos + n : lenta_size;
 		for (i = pos; i < k; ++i)
