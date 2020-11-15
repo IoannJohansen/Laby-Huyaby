@@ -3,8 +3,9 @@
 typedef short GRBALPHABET;
 namespace GRB
 {
-#define NS(n) Rule::Chain::N(n)			//	
-#define TS(n) Rule::Chain::T(n)			//	
+#define NS(n) Rule::Chain::N(n)			//	NT
+#define TS(n) Rule::Chain::T(n)			//	T
+
 	struct Rule				// правило в грамматике Грейбах
 	{
 		GRBALPHABET nn;		// нетерминал(левый символ правила) <0
@@ -25,13 +26,16 @@ namespace GRB
 			static char alphabet_to_char(GRBALPHABET s) { return isT(s) ? char(s) : char(-s); }	//GRBALPHABET->char
 		} *chains;										//массив цепочек - правых частей правила
 		Rule() { nn = 0x00; size = 0; }
+		
 		Rule(GRBALPHABET pnn,						//нетерминал (<0)
 			int iderror,							//идентификатор диагностического сообщения
 			short psize,							//количество цепочек - правых частей правила
 			Chain c, ...);							//множество цепочек - правых частей правила
+
 		char* getCRule(								//получить правило в виде N->цепочка(для распечатки)
 			char* b,								//буфер
 			short nchain);							//номер цепочки(правой части) в правиле
+		
 		short getNextChain(							//получить следующую за j подходящую цепочку, вернуть её номер или -1
 			GRBALPHABET t,							//первый символ цепочки
 			Rule::Chain& pchain,					//возвращаемая цепочка
@@ -44,15 +48,19 @@ namespace GRB
 		GRBALPHABET startN;							 //стартовый символ
 		GRBALPHABET stbottomT;						//дно стека
 		Rule* rules;								 //множество правил
+
 		Greibach() { size = 0; startN = 0; stbottomT = 0; rules = 0; }
+
 		Greibach(
 			GRBALPHABET pstartN,					//стартовый символ
 			GRBALPHABET pstbottomT,					//дно стека
 			short psize,							//количество правил
 			Rule r, ...);							//правила
+
 		short getRule(								//получить правило, возвращается номер правила или -1
 			GRBALPHABET pnn,						//левый символ правила
 			Rule& prule);							//возвращаемое правило грамматики
+
 		Rule getRule(short n);						//получить правило по номеру
 	};
 
