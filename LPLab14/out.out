@@ -2,6 +2,7 @@ integer function fi(integer x,integer y)|
 {|
 	declare integer z;|
 	z=x+y;|
+	z=x*y;|
 	return z;|
 };|
 string function fs(string a,string b)|
