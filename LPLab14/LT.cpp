@@ -40,11 +40,13 @@ namespace LT {
 			throw ERROR_THROW(125);
 		}
 		//----------------------------------------------------
-		/*cout << "№\t" << "Lex\t" << endl;
+
+		cout << "№\t" << "Lex\t" << endl;
 		for (int i = 0; i < this->size ; i++)
 		{
 			cout << i << '\t' << this->table[i].lexema << "		|		" << this->table[i].idxTI << "		|		"  << endl;
-		}*/
+		}
+
 		//----------------------------------------------------
 		*lexStream << "\tТаблица лексем" << endl;
 		*lexStream << "---------------------" << endl;
@@ -55,7 +57,10 @@ namespace LT {
 			for (int i = 0; i < this->size;)
 			{
 				if (currentString == this->table[i].sn)
+				{
 					(*lexStream) << this->table[i++].lexema;
+					if (this->table[i-1].idxTI!=-1)(*lexStream) << '<' << this->table[i - 1].idxTI << '>';
+				}
 				else
 				{
 					(*lexStream) << '\n' << currentString++ + 2 << '\t';

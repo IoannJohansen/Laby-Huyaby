@@ -29,7 +29,7 @@ namespace IT
 		{
 			if (!strcmp(idtable.table[i].id, id) && !strcmp(idtable.table[i].parrentBlock, block))
 				return i;
-			if (!strcmp(idtable.table[i].id, id) && idtable.table[i].idtype == F)
+			if (!strcmp(idtable.table[i].id, id) && idtable.table[i].idtype == F && !strcmp(idtable.table[i].parrentBlock, TI_BLOCK_DEFAULT))
 				return i;
 		}
 		return TI_NULLIDX;
@@ -70,12 +70,12 @@ namespace IT
 					{
 					case IT::IDDATATYPE::INT:
 					{
-						*(idStream) << '|' << std::setw(15) << "INT  " << '|' << std::setw(50) << this->table[i].value.vint << '|' << std::setw(15) << "-" << '|' << std::endl;
+						*(idStream) << '|' << std::setw(15) << "INT  " << '|' << std::setw(50) << this->table[i].value.vint << "||" << this->table[i].idxfirstLE << '|' << std::setw(15) << "-" << '|' << std::endl;
 						break;
 					}
 					case IT::IDDATATYPE::STR:
 					{
-						*(idStream) << '|' << std::setw(15) << "STR  " << '|' << std::setw(50) << this->table[i].value.vstr.str << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
+						*(idStream) << '|' << std::setw(15) << "STR  " << '|' << std::setw(50) << this->table[i].value.vstr.str << "||" << this->table[i].idxfirstLE << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
 						break;
 					}
 					}
@@ -113,12 +113,12 @@ namespace IT
 					{
 					case IT::IDDATATYPE::INT:
 					{
-						*(idStream) << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(30) << "INT " << '|' << std::endl;
+						*(idStream) << '|' << std::setw(20) << this->table[i].id << "||" << this->table[i].idxfirstLE << '|' << std::setw(30) << "INT " << '|' << std::endl;
 						break;
 					}
 					case IT::IDDATATYPE::STR:
 					{
-						*(idStream) << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(30) << "STR " << '|' << std::endl;
+						*(idStream) << '|' << std::setw(20) << this->table[i].id << "||" << this->table[i].idxfirstLE << '|' << std::setw(30) << "STR " << '|' << std::endl;
 						break;
 					}
 					}
@@ -150,7 +150,7 @@ namespace IT
 					if (flagForFirst)
 						*(idStream) << "-------------------------------------------------------------------------" << std::endl;
 
-					*(idStream) << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(19);
+					*(idStream) << '|' << std::setw(20) << this->table[i].id << "||" << this->table[i].idxfirstLE << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(19);
 					if (this->table[i].iddatatype == IT::STR)*(idStream) << "STR" << '|' << std::endl;
 					if (this->table[i].iddatatype == IT::INT)*(idStream) << "INT" << '|' << std::endl;
 					flagForFirst = true;
@@ -180,12 +180,12 @@ namespace IT
 					{
 					case IT::IDDATATYPE::INT:
 					{
-						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(15) << "INT " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vint << '|' << std::setw(15) << "- " << '|' << std::endl;
+						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << "||" << this->table[i].idxfirstLE << '|' << std::setw(15) << "INT " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vint << '|' << std::setw(15) << "- " << '|' << std::endl;
 						break;
 					}
 					case IT::IDDATATYPE::STR:
 					{
-						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << '|' << std::setw(15) << "STR " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vstr.str << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
+						*(idStream) << '|' << std::setw(30) << this->table[i].parrentBlock << '|' << std::setw(20) << this->table[i].id << "||" << this->table[i].idxfirstLE << '|' << std::setw(15) << "STR " << '|' << std::setw(25) << "V  " << '|' << std::setw(50) << this->table[i].value.vstr.str << '|' << std::setw(15) << (int)this->table[i].value.vstr.len << '|' << std::endl;
 						break;
 					}
 					}

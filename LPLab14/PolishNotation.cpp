@@ -34,6 +34,7 @@ namespace Polska
 			if (lexTable.table[i].lexema == LEX_ARITHMETIC && lexTable.table[i - 1].lexema == LEX_ARITHMETIC)throw ERROR_THROW(142);	 // bad interchange of operand - operation
 			if ((lexTable.table[i].lexema == LEX_ID) && (lexTable.table[i - 1].lexema == LEX_RIGHTHESIS))throw ERROR_THROW(143);	//---LAST
 			if ((lexTable.table[i].lexema == LEX_ARITHMETIC) && (lexTable.table[i-1].lexema == LEX_LEFTHESIS) && (lexTable.table[i + 1].lexema == LEX_RIGHTHESIS))throw ERROR_THROW(144);			//------!
+			if (lexTable.table[i].lexema == LEX_ARITHMETIC && lexTable.table[i + 1].lexema == LEX_RIGHTHESIS)throw ERROR_THROW(137);
 		}
 		srcLen++;					// чтоб выводилась ;
 

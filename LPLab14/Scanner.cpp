@@ -1,7 +1,7 @@
 #include "stdafx.h"
-	Lex::TempIT tempIT;
 	LT::LexTable lexTable = LT::Create(LT_MAXSIZE); // Создание таблицы лексем
 	IT::IdTable idenTable = IT::Create(TI_MAXSIZE);        // создание таблицы индефикаторов размером 200
+	Lex::TempIT tempIT;
 	IT::Entry entryIT = IT::GetEntry(idenTable, tempIT.numLine);
 	bool static mainIsDeclared;
 
@@ -345,9 +345,9 @@
 
 #pragma region Checking for lex errors
 
-			if (tempIT.flPar && (tempIT.flAssig||tempIT.flPrint))					// CHECK FOR VALID DECLARATION OF FACTIC PARAMETERS IN CALL OF FUNCTION
+			if (tempIT.flPar && (tempIT.flAssig||tempIT.flPrint))	// CHECK FOR VALID DECLARATION OF FACTIC PARAMETERS IN CALL OF FUNCTION
 			{
-				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size - 1].lexema != LEX_ARITHMETIC))		// -------!!!!!!!!!!!!!!!
+				if ((lexTable.table[lexTable.size-1].lexema!=LEX_LEFTHESIS) && (lexTable.table[lexTable.size-1].lexema!=LEX_COMMA)&&(lexTable.table[lexTable.size - 1].lexema != LEX_ARITHMETIC))
 				{
 					throw ERROR_THROW_IN(119, tempIT.numLine+1, tempIT.posNumber);
 				}
@@ -480,12 +480,12 @@
 		
 		void addLex(char lexem)
 		{
-			LT::Entry tempEntry;                             // временная лексема
+			LT::Entry tempEntry;
 			tempEntry.lexema = lexem;
 			tempEntry.sn = tempIT.numLine;
-			if (lexem == LEX_ID || lexem == LEX_ARITHMETIC) 
-			{		// !!!!
-				tempEntry.idxTI = idenTable.size;
+			if ((lexem == LEX_ID || lexem == LEX_ARITHMETIC || lexem == LEX_LITERAL)) 
+			{
+				tempEntry.idxTI = idenTable.size-1;
 			}
 			else
 				tempEntry.idxTI = LT_TI_NULLXDX;
@@ -508,7 +508,7 @@
 				entryIT.value.vstr.len = 0;
 			}
 			strcpy_s(entryIT.id, token);
-			entryIT.idxfirstLE = tempIT.numLine;
+			entryIT.idxfirstLE = lexTable.size/*tempIT.numLine*/;			// !!!!!!!!_!_!_!_!__!_!
 			if (tempIT.flPar)entryIT.idtype = IT::P;
 			IT::Add(idenTable, entryIT);
 			if(entryIT.idtype == IT::F && !tempIT.flDec)

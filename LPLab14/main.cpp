@@ -20,11 +20,11 @@ int wmain(int argc, wchar_t* argv[])
 		//-------------------------
 
 		//-------SYNTAX ANALYSE----
-		MFST_TRACE_START;								
+		/*MFST_TRACE_START;								
 		MFST::Mfst mfst(tables, GRB::getGreibach());	
 		mfst.start();
 		mfst.savededucation();
-		mfst.printrules();
+		mfst.printrules();*/
 		//-------------------------
 		
 		//-------POLISH NOTATION---
